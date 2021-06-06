@@ -31,6 +31,9 @@ namespace CTime3.Apps.CommandLine
                 
                 f.AddCommand<LoginCommand>("login")
                     .WithDescription("Login so you can use the other commands.");
+
+                f.AddCommand<ListCommand>("list")
+                    .WithDescription("Shows a list of your previous times.");
             });
 
             return await app.RunAsync(args);

@@ -18,7 +18,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CTime3.Core.Services.CTime.ImageCache;
+
 using static CTime3.Core.Extensions.StringExtensions;
+using static CTime3.Core.Extensions.JsonExtensions;
 
 namespace CTime3.Core.Services.CTime
 {
@@ -110,44 +112,44 @@ namespace CTime3.Core.Services.CTime
                     {"APPGUID", CTimeUniversalAppGuid },
                 });
 
-                //if (responseJson == null)
+                if (responseJson == null)
                     return new List<Time>();
 
-                //if (responseJson.GetNamedValue("Result", JsonValue.CreateNullValue()).ValueType != JsonValueType.Array)
-                //    return new List<Time>();
+                if (responseJson.Values<JObject>("Result") == null)
+                    return new List<Time>();
 
-                //return responseJson
-                //    .GetNamedArray("Result", new JsonArray())
-                //    .Select(f => f.GetObject())
-                //    .Select(f => new Time
-                //    {
-                //        Day = f.GetDateTime("DayDate"),
-                //        Hours = f.GetTimeSpan("TimeHour_IST_HR"),
-                //        State = f.GetNullableEnum<TimeState>("TimeTrackTypePure"),
-                //        StateDescription = f.GetString("TimeTrackTypeDescription"),
-                //        ClockInTime = f.GetNullableDateTime("TimeTrackIn"),
-                //        ClockOutTime = f.GetNullableDateTime("TimeTrackOut"),
-                //    })
-                //    .Select(f =>
-                //    {
-                //        if (f.ClockInTime != null && f.ClockOutTime != null)
-                //        {
-                //            f.State = (f.State ?? 0) | TimeState.Left;
-                //        }
-                //        else if (f.ClockInTime != null)
-                //        {
-                //            f.State = (f.State ?? 0) | TimeState.Entered;
-                //        }
+                return responseJson
+                    .Value<JArray>("Result")
+                    .Cast<JObject>()
+                    .Select(f => new Time
+                    {
+                        Day = f.Value<DateTime>("DayDate"),
+                        Hours = f.ValueAsTimeSpan("TimeHour_IST_HR"),
+                        State = (TimeState?)f.Value<int?>("TimeTrackTypePure"),
+                        StateDescription = f.Value<string>("TimeTrackTypeDescription"),
+                        ClockInTime = f.Value<DateTime?>("TimeTrackIn"),
+                        ClockOutTime = f.Value<DateTime?>("TimeTrackOut"),
+                    })
+                    .Select(f =>
+                    {
+                        if (f.ClockInTime != null && f.ClockOutTime != null)
+                        {
+                            f.State = (f.State ?? 0) | TimeState.Left;
+                        }
+                        else if (f.ClockInTime != null)
+                        {
+                            f.State = (f.State ?? 0) | TimeState.Entered;
+                        }
 
-                //        if (f.State == TimeState.Entered || f.State == TimeState.Left)
-                //        {
-                //            f.StateDescription = null;
-                //        }
+                        if (f.State == TimeState.Entered || f.State == TimeState.Left)
+                        {
+                            f.StateDescription = null;
+                        }
 
-                //        return f;
-                //    })
-                //    .Where(f => f.Day <= this._clock.Today() || f.ClockInTime != null || f.ClockOutTime != null)
-                //    .ToList();
+                        return f;
+                    })
+                    .Where(f => f.Day <= this._clock.Today() || f.ClockInTime != null || f.ClockOutTime != null)
+                    .ToList();
             }
             catch (Exception exception) when (exception is CTimeException == false)
             {
