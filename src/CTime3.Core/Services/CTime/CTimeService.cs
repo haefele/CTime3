@@ -419,7 +419,7 @@ namespace CTime3.Core.Services.CTime
 
         private string GetBaseUri()
         {
-            return "https://api.c-time.net/php/V2/";
+            return "https://api.c-time.net/";
         }
     }
 }

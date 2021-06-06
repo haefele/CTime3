@@ -4,11 +4,12 @@ using CTime3.Apps.CommandLine.Commands;
 using CTime3.Apps.CommandLine.Infrastructure;
 using CTime3.Core.Services.Analytics;
 using CTime3.Core.Services.Clock;
+using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
 using CTime3.Core.Services.CTime.ImageCache;
 using CTime3.Core.Services.CTime.RequestCache;
-using CTime3.Core.Services.DataStorage;
 using CTime3.Core.Services.GeoLocation;
+using CTime3.Core.Services.Paths;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Spectre.Console.Cli;
@@ -28,7 +29,8 @@ namespace CTime3.Apps.CommandLine
             {
                 f.PropagateExceptions();
                 
-                f.AddCommand<LoginCommand>("login");
+                f.AddCommand<LoginCommand>("login")
+                    .WithDescription("Login so you can use the other commands.");
             });
 
             return await app.RunAsync(args);
@@ -46,7 +48,8 @@ namespace CTime3.Apps.CommandLine
             collection.AddSingleton<IEmployeeImageCache, EmployeeImageCache>();
             collection.AddSingleton<IGeoLocationService, GeoLocationService>();
             collection.AddSingleton<IAnalyticsService, NullAnalyticsService>();
-            collection.AddSingleton<IDataStorage, FileDataStorage>();
+            collection.AddSingleton<IConfigurationService, LiteDBConfigurationService>();
+            collection.AddSingleton<ICTimePaths>(new CTimePaths("c-Time CLI"));
 
             return collection;
         }

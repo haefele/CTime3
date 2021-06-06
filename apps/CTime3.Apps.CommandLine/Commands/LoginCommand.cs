@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CTime3.Core;
+using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
-using CTime3.Core.Services.DataStorage;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -10,18 +11,30 @@ namespace CTime3.Apps.CommandLine.Commands
     public class LoginCommand : AsyncCommand
     {
         private readonly ICTimeService _cTimeService;
-        private readonly IDataStorage _dataStorage;
+        private readonly IConfigurationService _configurationService;
         private readonly IAnsiConsole _ansiConsole;
 
-        public LoginCommand(ICTimeService cTimeService, IDataStorage dataStorage, IAnsiConsole ansiConsole)
+        public LoginCommand(ICTimeService cTimeService, IConfigurationService configurationService, IAnsiConsole ansiConsole)
         {
+            Guard.NotNull(cTimeService, nameof(cTimeService));
+            Guard.NotNull(configurationService, nameof(configurationService));
+            Guard.NotNull(ansiConsole, nameof(ansiConsole));
+            
             this._cTimeService = cTimeService;
-            this._dataStorage = dataStorage;
+            this._configurationService = configurationService;
             this._ansiConsole = ansiConsole;
         }
 
         public override async Task<int> ExecuteAsync(CommandContext context)
         {
+            if (this._configurationService.Config.CurrentUser != null)
+            {
+                this._ansiConsole.MarkupLine($"You are [red]already logged in[/] as [bold]{this._configurationService.Config.CurrentUser.FirstName} {this._configurationService.Config.CurrentUser.Name}[/]!");
+                
+                if (this._ansiConsole.Confirm("Do you really want to login as a different user?") == false)
+                    return ExitCodes.Cancelled;
+            }
+            
             var emailAddress = this._ansiConsole.Ask<string>("Please enter your c-Time [bold]email address[/]:");
             var password = this._ansiConsole.Prompt(new TextPrompt<string>("And your c-Time [bold]password[/]:")
             {
@@ -37,13 +50,17 @@ namespace CTime3.Apps.CommandLine.Commands
             
             if (user == null)
             {
-                this._ansiConsole.Write(new Rule("[red]Login failed[/]").LeftAligned());
-                this._ansiConsole.MarkupLine("Please make sure you entered your [bold]email address[/] and [bold]password[/] correctly.");
-                
-                return 1;
+                this._ansiConsole.MarkupLine("[red]Login failed![/] Please make sure you entered your [bold]email address[/] and [bold]password[/] correctly.");
+                return ExitCodes.Failed;
             }
+            
+            this._ansiConsole.MarkupLine($"[green]Login successful![/] Welcome [bold]{user.FirstName} {user.Name}[/]!");
+            this._ansiConsole.MarkupLine("You are now [green]logged in[/] and can use other commands like [bold]start[/], [bold]stop[/], [bold]status[/] or [bold]list[/].");
+            this._ansiConsole.MarkupLine("To see a full list of possible commands execute the ctime command-line without any command.");
 
-            return 0;
+            await this._configurationService.Modify(config => config with { CurrentUser = CurrentUser.FromUser(user) });
+            
+            return ExitCodes.Ok;
         }
     }
 }
