@@ -10,6 +10,7 @@ using CTime3.Core.Services.CTime.ImageCache;
 using CTime3.Core.Services.CTime.RequestCache;
 using CTime3.Core.Services.GeoLocation;
 using CTime3.Core.Services.Paths;
+using CTime3.Core.Services.Statistics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Spectre.Console.Cli;
@@ -37,6 +38,9 @@ namespace CTime3.Apps.CommandLine
                 
                 f.AddCommand<ListCommand>("list")
                     .WithDescription("Shows a list of your previous times.");
+
+                f.AddCommand<StatusCommand>("status")
+                    .WithDescription("Shows whether you're currently checked-in or not, and your current time.");
             });
 
             return await app.RunAsync(args);
@@ -56,6 +60,7 @@ namespace CTime3.Apps.CommandLine
             collection.AddSingleton<IAnalyticsService, NullAnalyticsService>();
             collection.AddSingleton<IConfigurationService, LiteDBConfigurationService>();
             collection.AddSingleton<ICTimePaths>(new CTimePaths("c-Time CLI"));
+            collection.AddSingleton<IStatisticsService, StatisticsService>();
 
             return collection;
         }

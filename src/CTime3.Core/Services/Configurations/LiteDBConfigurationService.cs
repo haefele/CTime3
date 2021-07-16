@@ -46,7 +46,7 @@ namespace CTime3.Core.Services.Configurations
                 }
             }
 
-            return new Configuration(null);
+            return Configuration.GetDefault();
         }
         
         public Task Modify(Func<Configuration, Configuration> changeAction)
