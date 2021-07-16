@@ -54,11 +54,11 @@ namespace CTime3.Apps.CommandLine.Commands
                 return ExitCodes.Failed;
             }
             
+            await this._configurationService.Modify(config => config with { CurrentUser = CurrentUser.FromUser(user) });
+            
             this._ansiConsole.MarkupLine($"[green]Login successful![/] Welcome [bold]{user.FirstName} {user.Name}[/]!");
             this._ansiConsole.MarkupLine("You are now [green]logged in[/] and can use other commands like [bold]start[/], [bold]stop[/], [bold]status[/] or [bold]list[/].");
             this._ansiConsole.MarkupLine("To see a full list of possible commands execute the ctime command-line without any command.");
-
-            await this._configurationService.Modify(config => config with { CurrentUser = CurrentUser.FromUser(user) });
             
             return ExitCodes.Ok;
         }

@@ -32,6 +32,9 @@ namespace CTime3.Apps.CommandLine
                 f.AddCommand<LoginCommand>("login")
                     .WithDescription("Login so you can use the other commands.");
 
+                f.AddCommand<LogoutCommand>("logout")
+                    .WithDescription("Logout the current user.");
+                
                 f.AddCommand<ListCommand>("list")
                     .WithDescription("Shows a list of your previous times.");
             });
