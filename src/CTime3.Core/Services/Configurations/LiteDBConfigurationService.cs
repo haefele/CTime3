@@ -49,7 +49,7 @@ namespace CTime3.Core.Services.Configurations
             return new Configuration(null);
         }
         
-        public async Task Modify(Func<Configuration, Configuration> changeAction)
+        public Task Modify(Func<Configuration, Configuration> changeAction)
         {
             var newConfig = changeAction(this.Config);
 
@@ -61,6 +61,8 @@ namespace CTime3.Core.Services.Configurations
             
             this._db.GetCollection<SerializedConfiguration>().Upsert(serializedConfig);
             this.Config = newConfig;
+
+            return Task.CompletedTask;
         }
 
         public void Dispose()
