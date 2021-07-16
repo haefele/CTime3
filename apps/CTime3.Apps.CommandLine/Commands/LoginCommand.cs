@@ -27,7 +27,7 @@ namespace CTime3.Apps.CommandLine.Commands
 
         public override async Task<int> ExecuteAsync(CommandContext context)
         {
-            if (this._configurationService.Config.CurrentUser != null)
+            if (this._configurationService.Config.CurrentUser is not null)
             {
                 this._ansiConsole.MarkupLine($"You are [red]already logged in[/] as [bold]{this._configurationService.Config.CurrentUser.FirstName} {this._configurationService.Config.CurrentUser.Name}[/]!");
                 
@@ -48,7 +48,7 @@ namespace CTime3.Apps.CommandLine.Commands
                     user = await this._cTimeService.Login(emailAddress, password);
                 });
             
-            if (user == null)
+            if (user is null)
             {
                 this._ansiConsole.MarkupLine("[red]Login failed![/] Please make sure you entered your [bold]email address[/] and [bold]password[/] correctly.");
                 return ExitCodes.Failed;

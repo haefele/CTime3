@@ -36,7 +36,7 @@ namespace CTime3.Core.Services.CTime
         public static async Task<bool> IsCurrentlyCheckedIn(this ICTimeService self, string employeeGuid)
         {
             var currentTime = await self.GetCurrentTime(employeeGuid);
-            return currentTime != null && currentTime.State.IsEntered();
+            return currentTime is not null && currentTime.State.IsEntered();
         }
     }
 }

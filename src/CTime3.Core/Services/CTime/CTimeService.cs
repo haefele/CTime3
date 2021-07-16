@@ -75,7 +75,7 @@ namespace CTime3.Core.Services.CTime
                     .Select(f => f.ToObject<JObject>())
                     .FirstOrDefault();
 
-                if (user == null)
+                if (user is null)
                     return null;
 
                 return new User
@@ -112,10 +112,10 @@ namespace CTime3.Core.Services.CTime
                     {"APPGUID", CTimeUniversalAppGuid },
                 });
 
-                if (responseJson == null)
+                if (responseJson is null)
                     return new List<Time>();
 
-                if (responseJson.Values<JObject>("Result") == null)
+                if (responseJson.Values<JObject>("Result") is null)
                     return new List<Time>();
 
                 return responseJson
@@ -132,11 +132,11 @@ namespace CTime3.Core.Services.CTime
                     })
                     .Select(f =>
                     {
-                        if (f.ClockInTime != null && f.ClockOutTime != null)
+                        if (f.ClockInTime is not null && f.ClockOutTime is not null)
                         {
                             f.State = (f.State ?? 0) | TimeState.Left;
                         }
-                        else if (f.ClockInTime != null)
+                        else if (f.ClockInTime is not null)
                         {
                             f.State = (f.State ?? 0) | TimeState.Entered;
                         }
@@ -148,7 +148,7 @@ namespace CTime3.Core.Services.CTime
 
                         return f;
                     })
-                    .Where(f => f.Day <= this._clock.Today() || f.ClockInTime != null || f.ClockOutTime != null)
+                    .Where(f => f.Day <= this._clock.Today() || f.ClockInTime is not null || f.ClockOutTime is not null)
                     .ToList();
             }
             catch (Exception exception) when (exception is CTimeException == false)
@@ -209,7 +209,7 @@ namespace CTime3.Core.Services.CTime
 
                 bool IsFinishedTimeInFuture(Time time)
                 {
-                    if (time.ClockOutTime == null)
+                    if (time.ClockOutTime is null)
                         return false;
 
                     if (time.ClockOutTime <= this._clock.Now().AddMinutes(5))
@@ -246,7 +246,7 @@ namespace CTime3.Core.Services.CTime
                     {"APPGUID", CTimeUniversalAppGuid },
                 });
 
-                //if (responseJson == null)
+                //if (responseJson is null)
                     return new List<AttendingUser>();
 
                 //var defaultImageAsBase64 = Convert.ToBase64String(defaultImage ?? new byte[0]);
@@ -320,7 +320,7 @@ namespace CTime3.Core.Services.CTime
             if (state == (int)TimeState.Entered)
                 return Messages.Entered;
 
-            if (state == (int)TimeState.Left || state == null || state == 0)
+            if (state == (int)TimeState.Left || state is null || state == 0)
                 return Messages.Left;
 
             if (state == (int)TimeState.HomeOffice)
@@ -346,7 +346,7 @@ namespace CTime3.Core.Services.CTime
                 return Color.FromArgb(255, 63, 195, 128);
 
             bool stateIsLeft = state == (int)TimeState.Left;
-            bool stateIsEmpty = state == null || state == 0;
+            bool stateIsEmpty = state is null || state == 0;
             bool stateIsExpected = state == -1; //There is a special -1 state, that is called "Erwartet" - you're expected to work today, but didn't start yet
 
             if (stateIsLeft || stateIsEmpty || stateIsExpected)

@@ -34,7 +34,7 @@ namespace CTime3.Core.Services.Configurations
         {
             var serializedConfig = this._db.GetCollection<SerializedConfiguration>().FindById(SerializedConfiguration.UniqueId);
 
-            if (serializedConfig != null)
+            if (serializedConfig is not null)
             {
                 try
                 {

@@ -46,7 +46,7 @@ namespace CTime3.Core.Services.CTime
         }
         public static bool IsEntered(this TimeState? self)
         {
-            return self != null && self.Value.IsEntered();
+            return self is not null && self.Value.IsEntered();
         }
 
         public static bool IsLeft(this TimeState self)
@@ -56,7 +56,7 @@ namespace CTime3.Core.Services.CTime
 
         public static bool IsLeft(this TimeState? self)
         {
-            return self != null && self.Value.IsLeft();
+            return self is not null && self.Value.IsLeft();
         }
 
         public static bool IsTrip(this TimeState self)
@@ -66,7 +66,7 @@ namespace CTime3.Core.Services.CTime
 
         public static bool IsTrip(this TimeState? self)
         {
-            return self != null && self.Value.IsTrip();
+            return self is not null && self.Value.IsTrip();
         }
 
         public static bool IsHomeOffice(this TimeState self)
@@ -76,7 +76,7 @@ namespace CTime3.Core.Services.CTime
 
         public static bool IsHomeOffice(this TimeState? self)
         {
-            return self != null && self.Value.IsHomeOffice();
+            return self is not null && self.Value.IsHomeOffice();
         }
     }
 

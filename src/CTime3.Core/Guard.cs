@@ -10,14 +10,14 @@ namespace CTime3.Core
         [DebuggerStepThrough]
         public static void NotNull(object argument, string argumentName)
         {
-            if (argument == null)
+            if (argument is null)
                 throw new ArgumentNullException(argumentName);
         }
 
         [DebuggerStepThrough]
         public static void NotNullOrWhiteSpace(string argument, string argumentName)
         {
-            if (argument == null)
+            if (argument is null)
                 throw new ArgumentNullException(argumentName);
 
             if (string.IsNullOrWhiteSpace(argumentName))
@@ -27,7 +27,7 @@ namespace CTime3.Core
         [DebuggerStepThrough]
         public static void NotNullOrEmpty(IEnumerable argument, string argumentName)
         {
-            if (argument == null)
+            if (argument is null)
                 throw new ArgumentNullException(argumentName);
 
             if (argument.GetEnumerator().MoveNext() == false)
@@ -37,7 +37,7 @@ namespace CTime3.Core
         [DebuggerStepThrough]
         public static void NotInvalidEnum(object argument, string argumentName)
         {
-            if (argument == null)
+            if (argument is null)
                 throw new ArgumentNullException(argumentName);
 
             if (argument.GetType().GetTypeInfo().IsEnum == false)
@@ -64,7 +64,7 @@ namespace CTime3.Core
         [DebuggerStepThrough]
         public static void NotInvalidDateTime(DateTime? argument, string argumentName)
         {
-            if (argument == null)
+            if (argument is null)
                 throw new ArgumentNullException(argumentName);
 
             if (argument <= new DateTime(1900, 1, 1))

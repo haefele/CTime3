@@ -30,7 +30,7 @@ namespace CTime3.Apps.CommandLine.Commands
         
         public override async Task<int> ExecuteAsync(CommandContext context)
         {
-            if (this._configurationService.Config.CurrentUser == null)
+            if (this._configurationService.Config.CurrentUser is null)
             {
                 this._ansiConsole.MarkupLine("You are not [red]logged in![/] You have to login before using this command.");
                 return ExitCodes.Failed;
@@ -83,7 +83,7 @@ namespace CTime3.Apps.CommandLine.Commands
 
             foreach (var perDay in timesPerDay)
             {
-                var hasAnyTimes = perDay.Times.Any(f => f.ClockInTime != null || f.ClockOutTime != null);
+                var hasAnyTimes = perDay.Times.Any(f => f.ClockInTime is not null || f.ClockOutTime is not null);
 
                 var dayRule = new Rule($"[white underline]{perDay.Day:ddd dd. MMM yyyy}[/] [white dim]({(int) perDay.Times.First().Hours.TotalHours:00}:{perDay.Times.First().Hours.Minutes:00})[/]")
                     .LeftAligned()
@@ -106,12 +106,12 @@ namespace CTime3.Apps.CommandLine.Commands
                     {
                         var from = time.ClockInTime?.ToString("t") ?? "?";
                         var to = time.ClockOutTime?.ToString("t") ?? "?";
-                        var duration = time.ClockInTime != null && time.ClockOutTime != null
+                        var duration = time.ClockInTime is not null && time.ClockOutTime is not null
                             ? time.ClockOutTime.Value - time.ClockInTime.Value
                             : (TimeSpan?) null;
 
                         var timeAsString = $"{@from} - {to}".PadRight(titleLength + rulePaddingLeft - durationLength);
-                        if (duration != null)
+                        if (duration is not null)
                             timeAsString += $"[dim]({(int) duration.Value.TotalHours:00}:{duration.Value.Minutes:00})[/]";
 
                         this._ansiConsole.MarkupLine(timeAsString);

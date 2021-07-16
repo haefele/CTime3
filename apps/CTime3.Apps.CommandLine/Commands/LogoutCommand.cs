@@ -25,7 +25,7 @@ namespace CTime3.Apps.CommandLine.Commands
         {
             var currentUser = this._configurationService.Config.CurrentUser;
             
-            if (currentUser == null)
+            if (currentUser is null)
             {
                 this._ansiConsole.MarkupLine("You are [bold]currently not logged in[/].");
                 return ExitCodes.Ok;

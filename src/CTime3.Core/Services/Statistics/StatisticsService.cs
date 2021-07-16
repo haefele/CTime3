@@ -21,7 +21,7 @@ namespace CTime3.Core.Services.Statistics
         
         public CurrentTime CalculateCurrentTime(Time currentTime)
         {
-            if (currentTime == null)
+            if (currentTime is null)
                 return new CurrentTime(TimeSpan.Zero, null, null, false);
 
             var now = this._clock.Now().DateTime;
@@ -57,7 +57,7 @@ namespace CTime3.Core.Services.Statistics
                 timeToday = this._configurationService.Config.WorkDayHours;
             }
             
-            return new CurrentTime(timeToday, overtime, breakTime, currentTime.State.IsEntered() || breakTime != null);
+            return new CurrentTime(timeToday, overtime, breakTime, currentTime.State.IsEntered() || breakTime is not null);
         }
     }
 }
