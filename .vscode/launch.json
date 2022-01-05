@@ -10,9 +10,10 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/apps/CTime3.Apps.CommandLine/bin/Debug/net6.0/CTime3.Apps.CommandLine.dll",
-            "args": [],
+            "args": ["login"],
             "cwd": "${workspaceFolder}/apps/CTime3.Apps.CommandLine",
-            "console": "internalConsole",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
             "stopAtEntry": false
         }
     ]
