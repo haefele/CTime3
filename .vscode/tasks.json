@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "/home/gitpod/dotnet/dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/apps/CTime3.Apps.CommandLine/CTime3.Apps.CommandLine.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

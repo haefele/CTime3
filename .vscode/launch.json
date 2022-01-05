@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Launch Command-Line App",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/apps/CTime3.Apps.CommandLine/bin/Debug/net6.0/CTime3.Apps.CommandLine.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/apps/CTime3.Apps.CommandLine",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
