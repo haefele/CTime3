@@ -27,7 +27,7 @@ namespace CTime3.Apps.CommandLine.Infrastructure
         {
             if (_provider is IDisposable disposable)
             {
-                // disposable.Dispose();
+                disposable.Dispose();
             }
         }
     }
