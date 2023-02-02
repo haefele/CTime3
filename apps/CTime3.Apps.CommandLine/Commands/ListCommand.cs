@@ -86,7 +86,6 @@ namespace CTime3.Apps.CommandLine.Commands
                 var hasAnyTimes = perDay.Times.Any(f => f.ClockInTime is not null || f.ClockOutTime is not null);
 
                 var dayRule = new Rule($"[white underline]{perDay.Day:ddd dd. MMM yyyy}[/] [white dim]({(int) perDay.Times.First().Hours.TotalHours:00}:{perDay.Times.First().Hours.Minutes:00})[/]")
-                    .LeftAligned()
                     .Border(IsWeekend(perDay.Day) ? BoxBorder.Double : BoxBorder.Square)
                     .RuleStyle(new Style(hasAnyTimes ? Color.Green : Color.Red));
                 this._ansiConsole.Write(dayRule);
