@@ -1,4 +1,5 @@
 ﻿using System;
+using CommunityToolkit.Diagnostics;
 
 namespace CTime3.Core
 {
@@ -7,14 +8,14 @@ namespace CTime3.Core
         public CTimeException(string message)
             : base(message)
         {
-            Guard.NotNull(message, nameof(message));
+            Guard.IsNotNull(message, nameof(message));
         }
 
         public CTimeException(string message, Exception inner)
             : base(message, inner)
         {
-            Guard.NotNull(message, nameof(message));
-            Guard.NotNull(inner, nameof(inner));
+            Guard.IsNotNull(message, nameof(message));
+            Guard.IsNotNull(inner, nameof(inner));
         }
     }
 }

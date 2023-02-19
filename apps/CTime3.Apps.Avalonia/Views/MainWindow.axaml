@@ -38,7 +38,7 @@
         
         <ui:CommandBar>
             <ui:CommandBar.PrimaryCommands>
-                <ui:CommandBarButton IconSource="Save" Label="Save" />
+                <ui:CommandBarButton IconSource="Save" Label="Save" Click="Button_OnClick" />
                 <ui:CommandBarButton IconSource="Undo" Label="Undo" />
                 <ui:CommandBarSeparator />
                 <ui:CommandBarToggleButton IconSource="Bold" Label="Bold" />
@@ -85,7 +85,7 @@
             </ui:NavigationView.PaneFooter>
             
             <ui:NavigationView.Content>
-                <Button Content="Test" Click="Button_OnClick" />
+                <Button Content="Test" />
             </ui:NavigationView.Content>
         </ui:NavigationView>
 

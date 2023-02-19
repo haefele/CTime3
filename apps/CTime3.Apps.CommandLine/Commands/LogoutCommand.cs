@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using CTime3.Core;
 using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
@@ -14,8 +15,8 @@ namespace CTime3.Apps.CommandLine.Commands
 
         public LogoutCommand(IConfigurationService configurationService, IAnsiConsole ansiConsole)
         {
-            Guard.NotNull(configurationService, nameof(configurationService));
-            Guard.NotNull(ansiConsole, nameof(ansiConsole));
+            Guard.IsNotNull(configurationService, nameof(configurationService));
+            Guard.IsNotNull(ansiConsole, nameof(ansiConsole));
             
             this._configurationService = configurationService;
             this._ansiConsole = ansiConsole;

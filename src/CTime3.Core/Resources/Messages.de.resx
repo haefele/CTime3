@@ -120,4 +120,10 @@
   <data name="CTimeService.ErrorWhileLogin" xml:space="preserve">
     <value>Test Deutsch</value>
   </data>
+  <data name="Entered" xml:space="preserve">
+    <value>Anwesend</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Abwesend</value>
+  </data>
 </root>

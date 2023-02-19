@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using CTime3.Core;
 using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
@@ -18,10 +19,10 @@ namespace CTime3.Apps.CommandLine.Commands
 
         public StatusCommand(ICTimeService cTimeService, IStatisticsService statisticsService, IAnsiConsole ansiConsole, IConfigurationService configurationService)
         {
-            Guard.NotNull(cTimeService, nameof(cTimeService));
-            Guard.NotNull(statisticsService, nameof(statisticsService));
-            Guard.NotNull(ansiConsole, nameof(ansiConsole));
-            Guard.NotNull(configurationService, nameof(configurationService));
+            Guard.IsNotNull(cTimeService, nameof(cTimeService));
+            Guard.IsNotNull(statisticsService, nameof(statisticsService));
+            Guard.IsNotNull(ansiConsole, nameof(ansiConsole));
+            Guard.IsNotNull(configurationService, nameof(configurationService));
             
             this._cTimeService = cTimeService;
             this._statisticsService = statisticsService;

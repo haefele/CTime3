@@ -4,7 +4,6 @@ using CTime3.Core.Services.Clock;
 using CTime3.Core.Services.CTime.RequestCache;
 using CTime3.Core.Services.GeoLocation;
 using Microsoft.Extensions.Logging;
-using Microsoft.Toolkit.Mvvm.Messaging;
 using Newtonsoft.Json.Linq;
 using Polly;
 using System;
@@ -17,6 +16,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.Messaging;
 using CTime3.Core.Services.CTime.ImageCache;
 
 using static CTime3.Core.Extensions.StringExtensions;
@@ -39,13 +40,13 @@ namespace CTime3.Core.Services.CTime
 
         public CTimeService(ILogger<CTimeService> logger, ICTimeRequestCache requestCache, IMessenger messenger, IEmployeeImageCache employeeImageCache, IGeoLocationService geoLocationService, IClock clock, IAnalyticsService analyticsService)
         {
-            Guard.NotNull(logger, nameof(logger));
-            Guard.NotNull(requestCache, nameof(requestCache));
-            Guard.NotNull(messenger, nameof(messenger));
-            Guard.NotNull(employeeImageCache, nameof(employeeImageCache));
-            Guard.NotNull(geoLocationService, nameof(geoLocationService));
-            Guard.NotNull(clock, nameof(clock));
-            Guard.NotNull(analyticsService, nameof(analyticsService));
+            Guard.IsNotNull(logger, nameof(logger));
+            Guard.IsNotNull(requestCache, nameof(requestCache));
+            Guard.IsNotNull(messenger, nameof(messenger));
+            Guard.IsNotNull(employeeImageCache, nameof(employeeImageCache));
+            Guard.IsNotNull(geoLocationService, nameof(geoLocationService));
+            Guard.IsNotNull(clock, nameof(clock));
+            Guard.IsNotNull(analyticsService, nameof(analyticsService));
 
             this._logger = logger;
             this._requestCache = requestCache;
@@ -115,9 +116,6 @@ namespace CTime3.Core.Services.CTime
                 if (responseJson is null)
                     return new List<Time>();
 
-                if (responseJson.Values<JObject>("Result") is null)
-                    return new List<Time>();
-
                 return responseJson
                     .Value<JArray>("Result")
                     .Cast<JObject>()
@@ -141,7 +139,7 @@ namespace CTime3.Core.Services.CTime
                             f.State = (f.State ?? 0) | TimeState.Entered;
                         }
 
-                        if (f.State == TimeState.Entered || f.State == TimeState.Left)
+                        if (f.State is TimeState.Entered or TimeState.Left)
                         {
                             f.StateDescription = null;
                         }
@@ -249,42 +247,41 @@ namespace CTime3.Core.Services.CTime
                     return new List<AttendingUser>();
 
                 var newCacheEtag = responseJson
-                    .Values<JObject>("Result")
+                    .Value<JArray>("Result")
+                    .Cast<JObject>()
                     .Select(f => f.Value<string>("cacheDate"))
                     .FirstOrDefault();
 
-                var defaultImageAsBase64 = Convert.ToBase64String(defaultImage ?? new byte[0]);
+                var defaultImageAsBase64 = Convert.ToBase64String(defaultImage ?? Array.Empty<byte>());
 
-                // var result = responseJson
-                //     .GetNamedArray("Result", new JsonArray())
-                //     .Select(f => f.GetObject())
-                //     .Select(f => new
-                //     {
-                //         EmployeeI3D = f.GetInt("EmployeeI3D"),
-                //         Employee = new AttendingUser
-                //         {
-                //             Id = f.GetInt("EmployeeI3D").ToString(),
-                //             Name = f.GetString("EmployeeName"),
-                //             FirstName = f.GetString("EmployeeFirstName"),
-                //             AttendanceState = new AttendanceState
-                //             {
-                //                 IsAttending = f.GetInt("PresenceStatus") == 1,
-                //                 Name = this.ParseAttendanceStateName(f.GetString("TimerTypeDescription"), f.GetNullableInt("TimeTrackTypePure"), f.GetInt("PresenceStatus") == 1),
-                //                 Color = this.ParseColor(f.GetString("EnumColor"), f.GetNullableInt("TimeTrackTypePure")),
-                //             },
-                //             ImageAsPng = Convert.FromBase64String(f.GetString("EmployeePhoto") ?? defaultImageAsBase64),
-                //             EmailAddress = f.GetString("EmployeeEmail"),
-                //             PhoneNumber = f.GetString("EmployeePhone"),
-                //             Departments = f.GetString("EmployeeGroups")
-                //                            ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                //                            .Select(d => d.Trim())
-                //                            .ToArray() ?? Array.Empty<string>(),
-                //         }
-                //     })
-                //     .GroupBy(f => f.EmployeeI3D)
-                //     .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).FirstOrDefault());
-
-                var result = new Dictionary<int, AttendingUser>();
+                var result = responseJson
+                    .Value<JArray>("Result")
+                    .Cast<JObject>()
+                    .Select(f => new
+                    {
+                        EmployeeI3D = f.Value<int>("EmployeeI3D"),
+                        Employee = new AttendingUser
+                        {
+                            Id = f.Value<int>("EmployeeI3D").ToString(),
+                            Name = f.Value<string>("EmployeeName"),
+                            FirstName = f.Value<string>("EmployeeFirstName"),
+                            AttendanceState = new AttendanceState
+                            {
+                                IsAttending = f.Value<int>("PresenceStatus") == 1,
+                                Name = this.ParseAttendanceStateName(f.Value<string>("TimerTypeDescription"), f.Value<int?>("TimeTrackTypePure"), f.Value<int>("PresenceStatus") == 1),
+                                Color = this.ParseColor(f.Value<string>("EnumColor"), f.Value<int?>("TimeTrackTypePure")),
+                            },
+                            ImageAsPng = Convert.FromBase64String(f.Value<string>("EmployeePhoto") ?? defaultImageAsBase64),
+                            EmailAddress = f.Value<string>("EmployeeEmail"),
+                            PhoneNumber = f.Value<string>("EmployeePhone"),
+                            Departments = f.Value<string>("EmployeeGroups")
+                                           ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                           .Select(d => d.Trim())
+                                           .ToArray() ?? Array.Empty<string>(),
+                        }
+                    })
+                    .GroupBy(f => f.EmployeeI3D)
+                    .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).FirstOrDefault());
                 
                 if (newCacheEtag == currentCacheEtag)
                 {
@@ -316,7 +313,7 @@ namespace CTime3.Core.Services.CTime
             if (state == (int)TimeState.Entered)
                 return Messages.Entered;
 
-            if (state == (int)TimeState.Left || state is null || state == 0)
+            if (state is (int)TimeState.Left or null or 0)
                 return Messages.Left;
 
             if (state == (int)TimeState.HomeOffice)
@@ -342,7 +339,7 @@ namespace CTime3.Core.Services.CTime
                 return Color.FromArgb(255, 63, 195, 128);
 
             bool stateIsLeft = state == (int)TimeState.Left;
-            bool stateIsEmpty = state is null || state == 0;
+            bool stateIsEmpty = state is null or 0;
             bool stateIsExpected = state == -1; //There is a special -1 state, that is called "Erwartet" - you're expected to work today, but didn't start yet
 
             if (stateIsLeft || stateIsEmpty || stateIsExpected)
@@ -365,7 +362,7 @@ namespace CTime3.Core.Services.CTime
         private string GetHashedPassword(string password)
         {
             var passwordBytes = Encoding.UTF8.GetBytes(password);
-            var hashedPasswordBytes = MD5.Create().ComputeHash(passwordBytes);
+            var hashedPasswordBytes = MD5.HashData(passwordBytes);
             var hashedPasswordString = BitConverter.ToString(hashedPasswordBytes);
 
             return hashedPasswordString.Replace("-", string.Empty).ToLower();
@@ -373,9 +370,7 @@ namespace CTime3.Core.Services.CTime
 
         private async Task<JObject> SendRequestAsync(string function, Dictionary<string, string> data, bool canBeCached = true)
         {
-            string responseContentAsString;
-
-            if (canBeCached == false || this._requestCache.TryGetCached(function, data, out responseContentAsString) == false)
+            if (canBeCached == false || this._requestCache.TryGetCached(function, data, out var responseContentAsString) == false)
             {
                 var retryPolicy = Policy
                     .Handle<Exception>()
@@ -403,6 +398,7 @@ namespace CTime3.Core.Services.CTime
             }
             else
             {
+                // Fake a little bit of delay before returning the cached result
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
             }
 

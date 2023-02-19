@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
 using CTime3.Apps.CommandLine.Commands;
 using CTime3.Apps.CommandLine.Infrastructure;
 using CTime3.Core.Services.Analytics;
@@ -12,7 +13,6 @@ using CTime3.Core.Services.GeoLocation;
 using CTime3.Core.Services.Paths;
 using CTime3.Core.Services.Statistics;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
 using Spectre.Console.Cli;
 
 namespace CTime3.Apps.CommandLine

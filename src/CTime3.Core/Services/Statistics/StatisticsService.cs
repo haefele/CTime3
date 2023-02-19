@@ -1,4 +1,5 @@
 ﻿using System;
+using CommunityToolkit.Diagnostics;
 using CTime3.Core.Services.Clock;
 using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
@@ -12,8 +13,8 @@ namespace CTime3.Core.Services.Statistics
 
         public StatisticsService(IClock clock, IConfigurationService configurationService)
         {
-            Guard.NotNull(clock, nameof(clock));
-            Guard.NotNull(configurationService, nameof(configurationService));
+            Guard.IsNotNull(clock, nameof(clock));
+            Guard.IsNotNull(configurationService, nameof(configurationService));
             
             this._clock = clock;
             this._configurationService = configurationService;

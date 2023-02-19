@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using CTime3.Core;
 using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
@@ -16,9 +17,9 @@ namespace CTime3.Apps.CommandLine.Commands
 
         public LoginCommand(ICTimeService cTimeService, IConfigurationService configurationService, IAnsiConsole ansiConsole)
         {
-            Guard.NotNull(cTimeService, nameof(cTimeService));
-            Guard.NotNull(configurationService, nameof(configurationService));
-            Guard.NotNull(ansiConsole, nameof(ansiConsole));
+            Guard.IsNotNull(cTimeService, nameof(cTimeService));
+            Guard.IsNotNull(configurationService, nameof(configurationService));
+            Guard.IsNotNull(ansiConsole, nameof(ansiConsole));
             
             this._cTimeService = cTimeService;
             this._configurationService = configurationService;

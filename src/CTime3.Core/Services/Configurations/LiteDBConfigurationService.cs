@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using CTime3.Core.Services.Paths;
 using LiteDB;
 using Microsoft.Extensions.Logging;
@@ -16,8 +17,8 @@ namespace CTime3.Core.Services.Configurations
 
         public LiteDBConfigurationService(ICTimePaths cTimePaths, ILogger<LiteDBConfigurationService> logger)
         {
-            Guard.NotNull(cTimePaths, nameof(cTimePaths));
-            Guard.NotNull(logger, nameof(logger));
+            Guard.IsNotNull(cTimePaths, nameof(cTimePaths));
+            Guard.IsNotNull(logger, nameof(logger));
             
             this._cTimePaths = cTimePaths;
             this._logger = logger;
