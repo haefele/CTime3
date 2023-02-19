@@ -18,6 +18,8 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTime3.Apps.CommandLine", "apps\CTime3.Apps.CommandLine\CTime3.Apps.CommandLine.csproj", "{DF449D70-EB16-461C-B6B7-9EC285CDCD93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTime3.Apps.Avalonia", "apps\CTime3.Apps.Avalonia\CTime3.Apps.Avalonia.csproj", "{D29D1736-87A8-41D0-9F04-260D59303756}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{DF449D70-EB16-461C-B6B7-9EC285CDCD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF449D70-EB16-461C-B6B7-9EC285CDCD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF449D70-EB16-461C-B6B7-9EC285CDCD93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29D1736-87A8-41D0-9F04-260D59303756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29D1736-87A8-41D0-9F04-260D59303756}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29D1736-87A8-41D0-9F04-260D59303756}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29D1736-87A8-41D0-9F04-260D59303756}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{65489AA0-71AF-4B3F-96C1-0BE4C37D1B1D} = {33F54611-1848-4689-BB01-D50A5406ABD3}
 		{DF449D70-EB16-461C-B6B7-9EC285CDCD93} = {B2184B07-BCF2-4B95-AC19-3F0108596757}
+		{D29D1736-87A8-41D0-9F04-260D59303756} = {B2184B07-BCF2-4B95-AC19-3F0108596757}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C0BF017-F422-478D-932A-B0533C5C2922}

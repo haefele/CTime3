@@ -220,9 +220,8 @@ namespace CTime3.Core.Services.CTime
                 }
 
                 return timesForToday
-                    .OrderByDescending(f => f.ClockInTime)
-                    .Where(f => IsFinishedTimeInFuture(f) == false) // For example, if you have a half day off in the afternoon
-                    .FirstOrDefault();
+                    .OrderByDescending(f => f.ClockInTime) // For example, if you have a half day off in the afternoon
+                    .FirstOrDefault(f => IsFinishedTimeInFuture(f) == false);
             }
             catch (Exception exception) when (exception is CTimeException == false)
             {
@@ -237,69 +236,66 @@ namespace CTime3.Core.Services.CTime
         {
             try
             {
-                var cacheEtag = this._employeeImageCache.ImageCacheEtag;
+                var currentCacheEtag = this._employeeImageCache.ImageCacheEtag;
 
                 var responseJson = await this.SendRequestAsync("GetPresenceListV2.php", new Dictionary<string, string>
                 {
                     {"GUID", companyId},
-                    {"cacheDate", cacheEtag ?? string.Empty },
+                    {"cacheDate", currentCacheEtag ?? string.Empty },
                     {"APPGUID", CTimeUniversalAppGuid },
                 });
 
-                //if (responseJson is null)
+                if (responseJson is null)
                     return new List<AttendingUser>();
 
-                //var defaultImageAsBase64 = Convert.ToBase64String(defaultImage ?? new byte[0]);
+                var newCacheEtag = responseJson
+                    .Values<JObject>("Result")
+                    .Select(f => f.Value<string>("cacheDate"))
+                    .FirstOrDefault();
 
-                //var newCacheEtag = responseJson
-                //    .GetNamedArray("Result", new JsonArray())
-                //    .Select(f => f.GetObject())
-                //    .Select(f => f.GetString("cacheDate"))
-                //    .FirstOrDefault();
+                var defaultImageAsBase64 = Convert.ToBase64String(defaultImage ?? new byte[0]);
 
-                //this._employeeImageCache.SetAttendanceListImageCacheEtag(newCacheEtag);
+                // var result = responseJson
+                //     .GetNamedArray("Result", new JsonArray())
+                //     .Select(f => f.GetObject())
+                //     .Select(f => new
+                //     {
+                //         EmployeeI3D = f.GetInt("EmployeeI3D"),
+                //         Employee = new AttendingUser
+                //         {
+                //             Id = f.GetInt("EmployeeI3D").ToString(),
+                //             Name = f.GetString("EmployeeName"),
+                //             FirstName = f.GetString("EmployeeFirstName"),
+                //             AttendanceState = new AttendanceState
+                //             {
+                //                 IsAttending = f.GetInt("PresenceStatus") == 1,
+                //                 Name = this.ParseAttendanceStateName(f.GetString("TimerTypeDescription"), f.GetNullableInt("TimeTrackTypePure"), f.GetInt("PresenceStatus") == 1),
+                //                 Color = this.ParseColor(f.GetString("EnumColor"), f.GetNullableInt("TimeTrackTypePure")),
+                //             },
+                //             ImageAsPng = Convert.FromBase64String(f.GetString("EmployeePhoto") ?? defaultImageAsBase64),
+                //             EmailAddress = f.GetString("EmployeeEmail"),
+                //             PhoneNumber = f.GetString("EmployeePhone"),
+                //             Departments = f.GetString("EmployeeGroups")
+                //                            ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                //                            .Select(d => d.Trim())
+                //                            .ToArray() ?? Array.Empty<string>(),
+                //         }
+                //     })
+                //     .GroupBy(f => f.EmployeeI3D)
+                //     .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).FirstOrDefault());
 
-                //var result = responseJson
-                //    .GetNamedArray("Result", new JsonArray())
-                //    .Select(f => f.GetObject())
-                //    .Select(f => new
-                //    {
-                //        EmployeeI3D = f.GetInt("EmployeeI3D"),
-                //        Employee = new AttendingUser
-                //        {
-                //            Id = f.GetInt("EmployeeI3D").ToString(),
-                //            Name = f.GetString("EmployeeName"),
-                //            FirstName = f.GetString("EmployeeFirstName"),
-                //            AttendanceState = new AttendanceState
-                //            {
-                //                IsAttending = f.GetInt("PresenceStatus") == 1,
-                //                Name = this.ParseAttendanceStateName(f.GetString("TimerTypeDescription"), f.GetNullableInt("TimeTrackTypePure"), f.GetInt("PresenceStatus") == 1),
-                //                Color = this.ParseColor(f.GetString("EnumColor"), f.GetNullableInt("TimeTrackTypePure")),
-                //            },
-                //            ImageAsPng = Convert.FromBase64String(f.GetString("EmployeePhoto") ?? defaultImageAsBase64),
-                //            EmailAddress = f.GetString("EmployeeEmail"),
-                //            PhoneNumber = f.GetString("EmployeePhone"),
-                //            Departments = f.GetString("EmployeeGroups")
-                //                           ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                //                           .Select(d => d.Trim())
-                //                           .ToArray() ?? Array.Empty<string>(),
-                //        }
-                //    })
-                //    .GroupBy(f => f.EmployeeI3D)
-                //    .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).FirstOrDefault());
+                var result = new Dictionary<int, AttendingUser>();
+                
+                if (newCacheEtag == currentCacheEtag)
+                {
+                    await this._employeeImageCache.FillWithCachedImages(result);
+                }
+                else 
+                {
+                    await this._employeeImageCache.CacheImagesAsync(result);
+                }
 
-                //var imageCache = new EmployeeImageCache();
-                //if (newCacheEtag == cacheEtag)
-                //{
-                //    await imageCache.FillWithCachedImages(result);
-                //}
-
-                //if (newCacheEtag != cacheEtag)
-                //{
-                //    await imageCache.CacheImagesAsync(result);
-                //}
-
-                //return result.Select(f => f.Value).ToList();
+                return result.Select(f => f.Value).ToList();
             }
             catch (Exception exception) when (exception is CTimeException == false)
             {
