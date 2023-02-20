@@ -35,7 +35,7 @@ namespace CTime3.Core.Services.CTime.RequestCache
             this._cache.AddOrUpdate(key, holder, (_, __) => holder);
         }
 
-        public bool TryGetCached(string function, Dictionary<string, string> data, out string response)
+        public bool TryGetCached(string function, Dictionary<string, string> data, out string? response)
         {
             Guard.IsNotNullOrWhiteSpace(function, nameof(function));
             Guard.IsNotNull(data, nameof(data));
@@ -44,9 +44,7 @@ namespace CTime3.Core.Services.CTime.RequestCache
 
             var key = this.ComputeKey(function, data);
 
-            ValueHolder holder;
-
-            if (this._cache.TryGetValue(key, out holder) == false)
+            if (this._cache.TryGetValue(key, out var holder) == false)
                 return false;
 
             if (holder.Time.Add(CacheDuration) <= this._clock.Now())
@@ -91,7 +89,7 @@ namespace CTime3.Core.Services.CTime.RequestCache
                 };
             }
 
-            public string CachedValue { get; private set; }
+            public string CachedValue { get; private set; } = string.Empty;
             public DateTimeOffset Time { get; private set; }
         }
     }

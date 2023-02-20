@@ -7,7 +7,7 @@ namespace CTime3.Core.Services.CTime.ImageCache
 {
     public class EmployeeImageCache : IEmployeeImageCache
     {
-        public string ImageCacheEtag { get; set; } //TODO: Implement
+        public string? ImageCacheEtag { get; set; } //TODO: Implement
 
         public async Task FillWithCachedImages(Dictionary<int, AttendingUser> users)
         {
@@ -20,7 +20,7 @@ namespace CTime3.Core.Services.CTime.ImageCache
             }
         }
 
-        private async Task<byte[]> GetCachedImageAsync(int employeeI3D)
+        private async Task<byte[]?> GetCachedImageAsync(int employeeI3D)
         {
             var imageFileName = this.GetImageFileName(employeeI3D);
             var imagesFolder = this.GetImagesFolderAsync();

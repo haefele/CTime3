@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CommunityToolkit.Diagnostics;
-using CTime3.Core;
 using CTime3.Core.Services.Configurations;
-using CTime3.Core.Services.CTime;
 using Spectre.Console;
 using Spectre.Console.Cli;
 

@@ -39,7 +39,7 @@ namespace CTime3.Apps.CommandLine.Commands
             
             foreach (var (start, end) in this.GetTimes())
             {
-                IList<Time> times = null;
+                List<Time> times = new List<Time>();
                 await this._ansiConsole
                     .Status()
                     .StartAsync("Loading times", async _ =>
@@ -98,7 +98,7 @@ namespace CTime3.Apps.CommandLine.Commands
                 }
                 else
                 {
-                    var titleLength = Markup.Remove(dayRule.Title).Length;
+                    var titleLength = Markup.Remove(dayRule.Title!).Length;
                     var durationLength = "(00:00)".Length;
                     var rulePaddingLeft = 3;
 

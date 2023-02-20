@@ -42,7 +42,7 @@ namespace CTime3.Apps.CommandLine.Commands
                 IsSecret = true,
             });
 
-            User user = null;
+            User? user = null;
             await this._ansiConsole.Status()
                 .StartAsync("Logging in...", async context =>
                 {

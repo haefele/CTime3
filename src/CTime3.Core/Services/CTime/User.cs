@@ -8,14 +8,14 @@ namespace CTime3.Core.Services.CTime
 {
     public class User
     {
-        public string Id { get; set; }
-        public string CompanyId { get; set; }
-        public string FirstName { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public byte[] ImageAsPng { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string CompanyId { get; set; } = string.Empty;
+        public string? FirstName { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public byte[]? ImageAsPng { get; set; }
         public bool SupportsGeoLocation { get; set; }
-        public byte[] CompanyImageAsPng { get; set; }
+        public byte[]? CompanyImageAsPng { get; set; }
     }
 
     public class Time
@@ -23,7 +23,7 @@ namespace CTime3.Core.Services.CTime
         public DateTime Day { get; set; }
         public TimeSpan Hours { get; set; }
         public TimeState? State { get; set; }
-        public string StateDescription { get; set; }
+        public string? StateDescription { get; set; }
         public DateTime? ClockInTime { get; set; }
         public DateTime? ClockOutTime { get; set; }
     }
@@ -82,21 +82,21 @@ namespace CTime3.Core.Services.CTime
 
     public class AttendingUser
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string FirstName { get; set; }
-        public AttendanceState AttendanceState { get; set; }
-        public byte[] ImageAsPng { get; set; }
-        public string EmailAddress { get; set; }
-        public string PhoneNumber { get; set; }
-        public string[] Departments { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string? Name { get; set; }
+        public string? FirstName { get; set; }
+        public AttendanceState AttendanceState { get; set; } = null!;
+        public byte[] ImageAsPng { get; set; } = Array.Empty<byte>();
+        public string? EmailAddress { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string[]? Departments { get; set; }
     }
 
     public class AttendanceState
     {
         public bool IsAttending { get; set; }
-        public string Name { get; set; }
-        public Color Color { get; set; }
+        public string? Name { get; set; }
+        public Color? Color { get; set; }
     }
 
     public class Color

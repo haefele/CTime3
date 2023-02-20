@@ -6,11 +6,11 @@ namespace CTime3.Core.Services.CTime
 {
     public interface ICTimeService
     {
-        Task<User> Login(string emailAddress, string password);
-        Task<IList<Time>> GetTimes(string employeeGuid, DateTime start, DateTime end);
-        Task SaveTimer(string employeeGuid, string rfidKey, DateTime time, string companyId, TimeState state, bool withGeolocation);
-        Task<Time> GetCurrentTime(string employeeGuid);
-        Task<IList<AttendingUser>> GetAttendingUsers(string companyId, byte[] defaultImage);
+        Task<User?> Login(string emailAddress, string password);
+        Task<List<Time>> GetTimes(string employeeGuid, DateTime start, DateTime end);
+        Task SaveTimer(string employeeGuid, string? rfidKey, DateTime time, string companyId, TimeState state, bool withGeolocation);
+        Task<Time?> GetCurrentTime(string employeeGuid);
+        Task<List<AttendingUser>> GetAttendingUsers(string companyId, byte[]? defaultImage);
     }
 
     public static class CTimeServiceExtensions

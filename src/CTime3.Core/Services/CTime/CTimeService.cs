@@ -58,7 +58,7 @@ namespace CTime3.Core.Services.CTime
             this._client = new HttpClient();
         }
 
-        public async Task<User> Login(string emailAddress, string password)
+        public async Task<User?> Login(string emailAddress, string password)
         {
             try
             {
@@ -71,9 +71,9 @@ namespace CTime3.Core.Services.CTime
                 };
                 var responseJson = await this.SendRequestAsync("LoginV2.php", data, canBeCached: false);
 
-                var user = responseJson?
-                    .Value<JArray>("Result")
-                    .Select(f => f.ToObject<JObject>())
+                var user = responseJson
+                    ?.Value<JArray>("Result")
+                    ?.Select(f => f.ToObject<JObject>())
                     .FirstOrDefault();
 
                 if (user is null)
@@ -81,14 +81,14 @@ namespace CTime3.Core.Services.CTime
 
                 return new User
                 {
-                    Id = user.Value<string>("EmployeeGUID"),
-                    CompanyId = user.Value<string>("CompanyGUID"),
+                    Id = user.Value<string>("EmployeeGUID")!,
+                    CompanyId = user.Value<string>("CompanyGUID")!,
                     Email = user.Value<string>("LoginName"),
                     FirstName = user.Value<string>("EmployeeFirstName"),
                     Name = user.Value<string>("EmployeeName"),
-                    ImageAsPng = Convert.FromBase64String(user.Value<string>("EmployeePhoto")),
+                    ImageAsPng = user.ValueAsBase64Array("EmployeePhoto"),
                     SupportsGeoLocation = user.Value<int>("GeolocationAllowed") == 1,
-                    CompanyImageAsPng = Convert.FromBase64String(user.Value<string>("CompanyImage")),
+                    CompanyImageAsPng = user.ValueAsBase64Array("CompanyImage"),
                 };
             }
             catch (Exception exception) when (exception is CTimeException == false)
@@ -100,7 +100,7 @@ namespace CTime3.Core.Services.CTime
             }
         }
 
-        public async Task<IList<Time>> GetTimes(string employeeGuid, DateTime start, DateTime end)
+        public async Task<List<Time>> GetTimes(string employeeGuid, DateTime start, DateTime end)
         {
             try
             {
@@ -113,18 +113,18 @@ namespace CTime3.Core.Services.CTime
                     {"APPGUID", CTimeUniversalAppGuid },
                 });
 
-                if (responseJson is null)
+                if (responseJson?.Value<JArray>("Result") is null)
                     return new List<Time>();
 
                 return responseJson
-                    .Value<JArray>("Result")
+                    .Value<JArray>("Result")!
                     .Cast<JObject>()
                     .Select(f => new Time
                     {
                         Day = f.Value<DateTime>("DayDate"),
                         Hours = f.ValueAsTimeSpan("TimeHour_IST_HR"),
                         State = (TimeState?)f.Value<int?>("TimeTrackTypePure"),
-                        StateDescription = f.Value<string>("TimeTrackTypeDescription"),
+                        StateDescription = f.Value<string>("TimeTrackTypeDescription")!,
                         ClockInTime = f.Value<DateTime?>("TimeTrackIn"),
                         ClockOutTime = f.Value<DateTime?>("TimeTrackOut"),
                     })
@@ -159,11 +159,11 @@ namespace CTime3.Core.Services.CTime
             }
         }
 
-        public async Task SaveTimer(string employeeGuid, string rfidKey, DateTime time, string companyId, TimeState state, bool withGeolocation)
+        public async Task SaveTimer(string employeeGuid, string? rfidKey, DateTime time, string companyId, TimeState state, bool withGeolocation)
         {
             try
             {
-                Geopoint location = withGeolocation
+                Geopoint? location = withGeolocation
                     ? await this._geoLocationService.TryGetGeoLocationAsync()
                     : null;
 
@@ -174,7 +174,7 @@ namespace CTime3.Core.Services.CTime
                     {"TimerTime", time.ToString("yyyy-MM-dd HH:mm:ss")},
                     {"EmployeeGUID", employeeGuid},
                     {"GUID", companyId},
-                    {"RFID", rfidKey},
+                    {"RFID", rfidKey ?? string.Empty},
                     {"lat", location?.Latitude.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
                     {"long", location?.Longitude.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
                     {"APPGUID", CTimeUniversalAppGuid },
@@ -199,7 +199,7 @@ namespace CTime3.Core.Services.CTime
             }
         }
 
-        public async Task<Time> GetCurrentTime(string employeeGuid)
+        public async Task<Time?> GetCurrentTime(string employeeGuid)
         {
             try
             {
@@ -230,7 +230,7 @@ namespace CTime3.Core.Services.CTime
             }
         }
 
-        public async Task<IList<AttendingUser>> GetAttendingUsers(string companyId, byte[] defaultImage)
+        public async Task<List<AttendingUser>> GetAttendingUsers(string companyId, byte[]? defaultImage)
         {
             try
             {
@@ -243,11 +243,11 @@ namespace CTime3.Core.Services.CTime
                     {"APPGUID", CTimeUniversalAppGuid },
                 });
 
-                if (responseJson is null)
+                if (responseJson is null || responseJson.Value<JArray>("Result") is null)
                     return new List<AttendingUser>();
 
                 var newCacheEtag = responseJson
-                    .Value<JArray>("Result")
+                    .Value<JArray>("Result")!
                     .Cast<JObject>()
                     .Select(f => f.Value<string>("cacheDate"))
                     .FirstOrDefault();
@@ -255,7 +255,7 @@ namespace CTime3.Core.Services.CTime
                 var defaultImageAsBase64 = Convert.ToBase64String(defaultImage ?? Array.Empty<byte>());
 
                 var result = responseJson
-                    .Value<JArray>("Result")
+                    .Value<JArray>("Result")!
                     .Cast<JObject>()
                     .Select(f => new
                     {
@@ -281,7 +281,7 @@ namespace CTime3.Core.Services.CTime
                         }
                     })
                     .GroupBy(f => f.EmployeeI3D)
-                    .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).FirstOrDefault());
+                    .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).First());
                 
                 if (newCacheEtag == currentCacheEtag)
                 {
@@ -308,7 +308,7 @@ namespace CTime3.Core.Services.CTime
             this._client.Dispose();
         }
 
-        private string ParseAttendanceStateName(string potentialName, int? state, bool attending)
+        private string ParseAttendanceStateName(string? potentialName, int? state, bool attending)
         {
             if (state == (int)TimeState.Entered)
                 return Messages.Entered;
@@ -329,10 +329,10 @@ namespace CTime3.Core.Services.CTime
                 ? Messages.Entered
                 : Messages.Left;
 
-            return $"{potentialName.MakeFirstCharacterUpperCase()} ({suffix})";
+            return $"{potentialName?.MakeFirstCharacterUpperCase()} ({suffix})";
         }
 
-        private Color ParseColor(string color, int? state)
+        private Color ParseColor(string? color, int? state)
         {
             //For default Entered and Left we use our own red and green colors "CTimeGreen" and "CTimeRed"
             if (state == (int)TimeState.Entered)
@@ -368,7 +368,7 @@ namespace CTime3.Core.Services.CTime
             return hashedPasswordString.Replace("-", string.Empty).ToLower();
         }
 
-        private async Task<JObject> SendRequestAsync(string function, Dictionary<string, string> data, bool canBeCached = true)
+        private async Task<JObject?> SendRequestAsync(string function, Dictionary<string, string> data, bool canBeCached = true)
         {
             if (canBeCached == false || this._requestCache.TryGetCached(function, data, out var responseContentAsString) == false)
             {
@@ -402,7 +402,9 @@ namespace CTime3.Core.Services.CTime
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
             }
 
-            return JObject.Parse(responseContentAsString);
+            return responseContentAsString is null 
+                ? null 
+                : JObject.Parse(responseContentAsString);
         }
 
         private Uri BuildUri(string function)

@@ -19,5 +19,15 @@ namespace CTime3.Core.Extensions
 
             return new TimeSpan(hours, minutes, 0);
         }
+
+        public static byte[] ValueAsBase64Array(this JObject self, string name)
+        {
+            var base64 = self.Value<string>(name);
+            
+            if (string.IsNullOrWhiteSpace(base64))
+                return Array.Empty<byte>();
+            
+            return Convert.FromBase64String(base64);
+        }
     }
 }

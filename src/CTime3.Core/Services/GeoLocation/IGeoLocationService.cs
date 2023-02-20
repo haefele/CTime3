@@ -6,7 +6,7 @@ namespace CTime3.Core.Services.GeoLocation
     public interface IGeoLocationService
     {
         Task<GeoLocationState> GetGeoLocationStateAsync(User user);
-        Task<Geopoint> TryGetGeoLocationAsync();
+        Task<Geopoint?> TryGetGeoLocationAsync();
     }
 
     public class GeoLocationService : IGeoLocationService
@@ -16,9 +16,9 @@ namespace CTime3.Core.Services.GeoLocation
             return Task.FromResult(GeoLocationState.NotRequired);
         }
 
-        public Task<Geopoint> TryGetGeoLocationAsync()
+        public Task<Geopoint?> TryGetGeoLocationAsync()
         {
-            return Task.FromResult<Geopoint>(null);
+            return Task.FromResult<Geopoint?>(null);
         }
     }
 

@@ -20,7 +20,7 @@ namespace CTime3.Core.Services.Statistics
             this._configurationService = configurationService;
         }
         
-        public CurrentTime CalculateCurrentTime(Time currentTime)
+        public CurrentTime CalculateCurrentTime(Time? currentTime)
         {
             if (currentTime is null)
                 return new CurrentTime(TimeSpan.Zero, null, null, false);
@@ -35,9 +35,9 @@ namespace CTime3.Core.Services.Statistics
                 : TimeSpan.Zero;
 
             if (currentTime.State.IsEntered())
-                timeToday += now - currentTime.ClockInTime.Value;
+                timeToday += now - currentTime.ClockInTime!.Value;
 
-            CurrentBreak breakTime = null;
+            CurrentBreak? breakTime = null;
          
             if (currentTime.Day == now.Date &&
                 currentTime.State.IsLeft() && 

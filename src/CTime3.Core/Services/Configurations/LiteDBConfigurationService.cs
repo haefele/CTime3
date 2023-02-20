@@ -35,11 +35,11 @@ namespace CTime3.Core.Services.Configurations
         {
             var serializedConfig = this._db.GetCollection<SerializedConfiguration>().FindById(SerializedConfiguration.UniqueId);
 
-            if (serializedConfig is not null)
+            if (serializedConfig is { ConfigurationAsJson: not null })
             {
                 try
                 {
-                    return JsonConvert.DeserializeObject<Configuration>(serializedConfig.ConfigurationAsJson);
+                    return JsonConvert.DeserializeObject<Configuration>(serializedConfig.ConfigurationAsJson) ?? Configuration.GetDefault();
                 }
                 catch (Exception exception)
                 {
@@ -76,7 +76,7 @@ namespace CTime3.Core.Services.Configurations
             public const int UniqueId = 123;
             
             public int Id { get; set; }
-            public string ConfigurationAsJson { get; set; }
+            public string? ConfigurationAsJson { get; set; }
         }
     }
 }

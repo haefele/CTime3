@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -23,7 +24,7 @@ public partial class MainWindow : Window
     {
         var service = CreateCTimeService();
         var user = await service.Login("haefele@c-entron.de", "Start1234!");
-        var attendingUsers = await service.GetAttendingUsers(user.CompanyId, new byte[0]);
+        var attendingUsers = await service.GetAttendingUsers(user!.CompanyId, Array.Empty<byte>());
 
 
     }

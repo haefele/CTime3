@@ -17,11 +17,11 @@ namespace CTime3.Apps.CommandLine.Infrastructure
             this._provider = provider;
         }
 
-        public object Resolve(Type type)
+        public object? Resolve(Type? type)
         {
-            Guard.IsNotNull(type, nameof(type));
-            
-            return _provider.GetRequiredService(type);
+            return type is null 
+                ? null 
+                : _provider.GetRequiredService(type);
         }
 
         public void Dispose()
