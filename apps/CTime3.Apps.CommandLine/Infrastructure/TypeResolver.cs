@@ -1,6 +1,5 @@
 ﻿using System;
 using CommunityToolkit.Diagnostics;
-using CTime3.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
@@ -12,15 +11,15 @@ namespace CTime3.Apps.CommandLine.Infrastructure
 
         public TypeResolver(IServiceProvider provider)
         {
-            Guard.IsNotNull(provider, nameof(provider));
-            
+            Guard.IsNotNull(provider);
+
             this._provider = provider;
         }
 
         public object? Resolve(Type? type)
         {
-            return type is null 
-                ? null 
+            return type is null
+                ? null
                 : _provider.GetRequiredService(type);
         }
 
@@ -28,7 +27,7 @@ namespace CTime3.Apps.CommandLine.Infrastructure
         {
             if (_provider is IDisposable disposable)
             {
-                // disposable.Dispose();
+                disposable.Dispose();
             }
         }
     }

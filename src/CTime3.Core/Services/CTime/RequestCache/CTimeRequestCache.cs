@@ -9,7 +9,7 @@ namespace CTime3.Core.Services.CTime.RequestCache
 {
     public class CTimeRequestCache : ICTimeRequestCache
     {
-        private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan s_cacheDuration = TimeSpan.FromMinutes(1);
 
         private readonly IClock _clock;
 
@@ -17,7 +17,7 @@ namespace CTime3.Core.Services.CTime.RequestCache
 
         public CTimeRequestCache(IClock clock)
         {
-            Guard.IsNotNull(clock, nameof(clock));
+            Guard.IsNotNull(clock);
 
             this._clock = clock;
 
@@ -26,19 +26,19 @@ namespace CTime3.Core.Services.CTime.RequestCache
 
         public void Cache(string function, Dictionary<string, string> data, string response)
         {
-            Guard.IsNotNullOrWhiteSpace(function, nameof(function));
-            Guard.IsNotNull(data, nameof(data));
+            Guard.IsNotNullOrWhiteSpace(function);
+            Guard.IsNotNull(data);
 
             var key = this.ComputeKey(function, data);
             var holder = ValueHolder.Create(response, this._clock.Now());
 
-            this._cache.AddOrUpdate(key, holder, (_, __) => holder);
+            this._cache.AddOrUpdate(key, holder, (_, _) => holder);
         }
 
         public bool TryGetCached(string function, Dictionary<string, string> data, out string? response)
         {
-            Guard.IsNotNullOrWhiteSpace(function, nameof(function));
-            Guard.IsNotNull(data, nameof(data));
+            Guard.IsNotNullOrWhiteSpace(function);
+            Guard.IsNotNull(data);
 
             response = null;
 
@@ -47,10 +47,10 @@ namespace CTime3.Core.Services.CTime.RequestCache
             if (this._cache.TryGetValue(key, out var holder) == false)
                 return false;
 
-            if (holder.Time.Add(CacheDuration) <= this._clock.Now())
+            if (holder.Time.Add(s_cacheDuration) <= this._clock.Now())
             {
                 //Value timed out, remove it from the cache
-                this._cache.TryRemove(key, out holder);
+                this._cache.TryRemove(key, out _);
                 return false;
             }
 
@@ -65,8 +65,8 @@ namespace CTime3.Core.Services.CTime.RequestCache
 
         private string ComputeKey(string function, Dictionary<string, string> data)
         {
-            Guard.IsNotNullOrWhiteSpace(function, nameof(function));
-            Guard.IsNotNull(data, nameof(data));
+            Guard.IsNotNullOrWhiteSpace(function);
+            Guard.IsNotNull(data);
 
             var keyObject = JObject.FromObject(new
             {

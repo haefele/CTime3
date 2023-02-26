@@ -13,13 +13,13 @@ namespace CTime3.Core.Services.Statistics
 
         public StatisticsService(IClock clock, IConfigurationService configurationService)
         {
-            Guard.IsNotNull(clock, nameof(clock));
-            Guard.IsNotNull(configurationService, nameof(configurationService));
-            
+            Guard.IsNotNull(clock);
+            Guard.IsNotNull(configurationService);
+
             this._clock = clock;
             this._configurationService = configurationService;
         }
-        
+
         public CurrentTime CalculateCurrentTime(Time? currentTime)
         {
             if (currentTime is null)
@@ -38,9 +38,9 @@ namespace CTime3.Core.Services.Statistics
                 timeToday += now - currentTime.ClockInTime!.Value;
 
             CurrentBreak? breakTime = null;
-         
+
             if (currentTime.Day == now.Date &&
-                currentTime.State.IsLeft() && 
+                currentTime.State.IsLeft() &&
                 currentTime.ClockOutTime.HasValue &&
                 currentTime.ClockOutTime.Value.TimeOfDay >= this._configurationService.Config.BreakTimeBegin &&
                 currentTime.ClockOutTime.Value.TimeOfDay <= this._configurationService.Config.BreakTimeEnd &&
@@ -57,7 +57,7 @@ namespace CTime3.Core.Services.Statistics
                 overtime = timeToday - this._configurationService.Config.WorkDayHours;
                 timeToday = this._configurationService.Config.WorkDayHours;
             }
-            
+
             return new CurrentTime(timeToday, overtime, breakTime, currentTime.State.IsEntered() || breakTime is not null);
         }
     }

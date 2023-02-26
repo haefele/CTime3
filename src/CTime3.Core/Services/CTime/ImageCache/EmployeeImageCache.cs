@@ -15,7 +15,7 @@ namespace CTime3.Core.Services.CTime.ImageCache
             {
                 var cachedImage = await this.GetCachedImageAsync(user.Key);
 
-                if (cachedImage is { Length: >0 })
+                if (cachedImage is { Length: > 0 })
                     user.Value.ImageAsPng = cachedImage;
             }
         }

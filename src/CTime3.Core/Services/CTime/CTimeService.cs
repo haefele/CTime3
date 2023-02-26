@@ -40,13 +40,13 @@ namespace CTime3.Core.Services.CTime
 
         public CTimeService(ILogger<CTimeService> logger, ICTimeRequestCache requestCache, IMessenger messenger, IEmployeeImageCache employeeImageCache, IGeoLocationService geoLocationService, IClock clock, IAnalyticsService analyticsService)
         {
-            Guard.IsNotNull(logger, nameof(logger));
-            Guard.IsNotNull(requestCache, nameof(requestCache));
-            Guard.IsNotNull(messenger, nameof(messenger));
-            Guard.IsNotNull(employeeImageCache, nameof(employeeImageCache));
-            Guard.IsNotNull(geoLocationService, nameof(geoLocationService));
-            Guard.IsNotNull(clock, nameof(clock));
-            Guard.IsNotNull(analyticsService, nameof(analyticsService));
+            Guard.IsNotNull(logger);
+            Guard.IsNotNull(requestCache);
+            Guard.IsNotNull(messenger);
+            Guard.IsNotNull(employeeImageCache);
+            Guard.IsNotNull(geoLocationService);
+            Guard.IsNotNull(clock);
+            Guard.IsNotNull(analyticsService);
 
             this._logger = logger;
             this._requestCache = requestCache;
@@ -163,7 +163,7 @@ namespace CTime3.Core.Services.CTime
         {
             try
             {
-                Geopoint? location = withGeolocation
+                var location = withGeolocation
                     ? await this._geoLocationService.TryGetGeoLocationAsync()
                     : null;
 
@@ -282,12 +282,12 @@ namespace CTime3.Core.Services.CTime
                     })
                     .GroupBy(f => f.EmployeeI3D)
                     .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).First());
-                
+
                 if (newCacheEtag == currentCacheEtag)
                 {
                     await this._employeeImageCache.FillWithCachedImages(result);
                 }
-                else 
+                else
                 {
                     await this._employeeImageCache.CacheImagesAsync(result);
                 }
@@ -325,7 +325,7 @@ namespace CTime3.Core.Services.CTime
             if (state == (int)TimeState.Trip)
                 potentialName = Messages.Trip;
 
-            string suffix = attending
+            var suffix = attending
                 ? Messages.Entered
                 : Messages.Left;
 
@@ -338,9 +338,9 @@ namespace CTime3.Core.Services.CTime
             if (state == (int)TimeState.Entered)
                 return Color.FromArgb(255, 63, 195, 128);
 
-            bool stateIsLeft = state == (int)TimeState.Left;
-            bool stateIsEmpty = state is null or 0;
-            bool stateIsExpected = state == -1; //There is a special -1 state, that is called "Erwartet" - you're expected to work today, but didn't start yet
+            var stateIsLeft = state == (int)TimeState.Left;
+            var stateIsEmpty = state is null or 0;
+            var stateIsExpected = state == -1; //There is a special -1 state, that is called "Erwartet" - you're expected to work today, but didn't start yet
 
             if (stateIsLeft || stateIsEmpty || stateIsExpected)
                 return Color.FromArgb(255, 231, 76, 60);
@@ -348,9 +348,9 @@ namespace CTime3.Core.Services.CTime
             if (string.IsNullOrWhiteSpace(color))
                 return Color.Transparent;
 
-            string r = color.Substring(1, 2);
-            string g = color.Substring(3, 2);
-            string b = color.Substring(5, 2);
+            var r = color.Substring(1, 2);
+            var g = color.Substring(3, 2);
+            var b = color.Substring(5, 2);
 
             return Color.FromArgb(
                 255,
@@ -402,8 +402,8 @@ namespace CTime3.Core.Services.CTime
                 await Task.Delay(TimeSpan.FromSeconds(0.1));
             }
 
-            return responseContentAsString is null 
-                ? null 
+            return responseContentAsString is null
+                ? null
                 : JObject.Parse(responseContentAsString);
         }
 

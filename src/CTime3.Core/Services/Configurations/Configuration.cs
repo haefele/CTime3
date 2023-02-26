@@ -26,7 +26,7 @@ namespace CTime3.Core.Services.Configurations
         string CompanyId,
         string? FirstName,
         string? Name,
-        string? EmailAddress, 
+        string? EmailAddress,
         bool SupportsGeoLocation)
     {
         public static CurrentUser FromUser(User user)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Messaging;
 using CTime3.Apps.CommandLine.Commands;
 using CTime3.Apps.CommandLine.Infrastructure;
@@ -25,17 +24,17 @@ namespace CTime3.Apps.CommandLine
             var registrar = new TypeRegistrar(services);
 
             var app = new CommandApp(registrar);
-            
+
             app.Configure(f =>
             {
                 f.PropagateExceptions();
-                
+
                 f.AddCommand<LoginCommand>("login")
                     .WithDescription("Login so you can use the other commands.");
 
                 f.AddCommand<LogoutCommand>("logout")
                     .WithDescription("Logout the current user.");
-                
+
                 f.AddCommand<ListCommand>("list")
                     .WithDescription("Shows a list of your previous times.");
 
@@ -49,7 +48,7 @@ namespace CTime3.Apps.CommandLine
         private static ServiceCollection BuildServices()
         {
             var collection = new ServiceCollection();
-            
+
             collection.AddLogging();
             collection.AddSingleton<ICTimeService, CTimeService>();
             collection.AddSingleton<ICTimeRequestCache, CTimeRequestCache>();
@@ -58,7 +57,7 @@ namespace CTime3.Apps.CommandLine
             collection.AddSingleton<IEmployeeImageCache, EmployeeImageCache>();
             collection.AddSingleton<IGeoLocationService, GeoLocationService>();
             collection.AddSingleton<IAnalyticsService, NullAnalyticsService>();
-            collection.AddSingleton<IConfigurationService, LiteDBConfigurationService>();
+            collection.AddSingleton<IConfigurationService, LiteDbConfigurationService>();
             collection.AddSingleton<ICTimePaths>(new CTimePaths("c-Time CLI"));
             collection.AddSingleton<IStatisticsService, StatisticsService>();
 

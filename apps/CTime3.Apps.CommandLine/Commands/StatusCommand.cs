@@ -19,17 +19,17 @@ namespace CTime3.Apps.CommandLine.Commands
 
         public StatusCommand(ICTimeService cTimeService, IStatisticsService statisticsService, IAnsiConsole ansiConsole, IConfigurationService configurationService)
         {
-            Guard.IsNotNull(cTimeService, nameof(cTimeService));
-            Guard.IsNotNull(statisticsService, nameof(statisticsService));
-            Guard.IsNotNull(ansiConsole, nameof(ansiConsole));
-            Guard.IsNotNull(configurationService, nameof(configurationService));
-            
+            Guard.IsNotNull(cTimeService);
+            Guard.IsNotNull(statisticsService);
+            Guard.IsNotNull(ansiConsole);
+            Guard.IsNotNull(configurationService);
+
             this._cTimeService = cTimeService;
             this._statisticsService = statisticsService;
             this._ansiConsole = ansiConsole;
             this._configurationService = configurationService;
         }
-        
+
         public override async Task<int> ExecuteAsync(CommandContext context)
         {
             if (this._configurationService.Config.CurrentUser is null)
@@ -40,11 +40,11 @@ namespace CTime3.Apps.CommandLine.Commands
 
             var time = await this._cTimeService.GetCurrentTime(this._configurationService.Config.CurrentUser.Id);
             var currentTime = this._statisticsService.CalculateCurrentTime(time);
-            
+
             this._ansiConsole.MarkupLine(currentTime.IsStillRunning
                 ? $"Hey {this._configurationService.Config.CurrentUser.FirstName}, you are [green]checked-in[/]!"
                 : $"Hey {this._configurationService.Config.CurrentUser.FirstName}, you are [red]checked-out[/]!");
-            
+
             this._ansiConsole.MarkupLine(currentTime.OverTime is null
                 ? $"Your [underline]current time[/] is [bold]{currentTime.WorkTime:hh\\:mm}[/]"
                 : $"Your [underline]current time[/] is [bold]{currentTime.WorkTime:hh\\:mm}[/] with a [underline]overtime[/] of [bold]{currentTime.OverTime.Value:hh\\:mm}[/]");

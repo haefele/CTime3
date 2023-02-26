@@ -9,23 +9,23 @@ using Newtonsoft.Json;
 
 namespace CTime3.Core.Services.Configurations
 {
-    public class LiteDBConfigurationService : IConfigurationService, IDisposable
+    public class LiteDbConfigurationService : IConfigurationService, IDisposable
     {
         private readonly ICTimePaths _cTimePaths;
-        private readonly ILogger<LiteDBConfigurationService> _logger;
+        private readonly ILogger<LiteDbConfigurationService> _logger;
         private readonly LiteDatabase _db;
 
-        public LiteDBConfigurationService(ICTimePaths cTimePaths, ILogger<LiteDBConfigurationService> logger)
+        public LiteDbConfigurationService(ICTimePaths cTimePaths, ILogger<LiteDbConfigurationService> logger)
         {
-            Guard.IsNotNull(cTimePaths, nameof(cTimePaths));
-            Guard.IsNotNull(logger, nameof(logger));
-            
+            Guard.IsNotNull(cTimePaths);
+            Guard.IsNotNull(logger);
+
             this._cTimePaths = cTimePaths;
             this._logger = logger;
 
             var filePath = Path.Combine(this._cTimePaths.DataDirectory, "database.db");
             this._db = new LiteDatabase($"Filename={filePath};Connection=Shared;Upgrade=true");
-            
+
             this.Config = this.ReadExistingConfig();
         }
 
@@ -49,7 +49,7 @@ namespace CTime3.Core.Services.Configurations
 
             return Configuration.GetDefault();
         }
-        
+
         public Task Modify(Func<Configuration, Configuration> changeAction)
         {
             var newConfig = changeAction(this.Config);
@@ -59,7 +59,7 @@ namespace CTime3.Core.Services.Configurations
                 Id = SerializedConfiguration.UniqueId,
                 ConfigurationAsJson = JsonConvert.SerializeObject(newConfig),
             };
-            
+
             this._db.GetCollection<SerializedConfiguration>().Upsert(serializedConfig);
             this.Config = newConfig;
 
@@ -74,7 +74,7 @@ namespace CTime3.Core.Services.Configurations
         private class SerializedConfiguration
         {
             public const int UniqueId = 123;
-            
+
             public int Id { get; set; }
             public string? ConfigurationAsJson { get; set; }
         }

@@ -12,8 +12,8 @@ namespace CTime3.Apps.CommandLine.Infrastructure
 
         public TypeRegistrar(IServiceCollection builder)
         {
-            Guard.IsNotNull(builder, nameof(builder));
-        
+            Guard.IsNotNull(builder);
+
             this._builder = builder;
         }
 
@@ -24,26 +24,26 @@ namespace CTime3.Apps.CommandLine.Infrastructure
 
         public void Register(Type service, Type implementation)
         {
-            Guard.IsNotNull(service, nameof(service));
-            Guard.IsNotNull(implementation, nameof(implementation));
-            
+            Guard.IsNotNull(service);
+            Guard.IsNotNull(implementation);
+
             this._builder.AddSingleton(service, implementation);
         }
 
         public void RegisterInstance(Type service, object implementation)
         {
-            Guard.IsNotNull(service, nameof(service));
-            Guard.IsNotNull(implementation, nameof(implementation));
-            
+            Guard.IsNotNull(service);
+            Guard.IsNotNull(implementation);
+
             this._builder.AddSingleton(service, implementation);
         }
 
         public void RegisterLazy(Type service, Func<object> func)
         {
-            Guard.IsNotNull(service, nameof(service));
-            Guard.IsNotNull(func, nameof(func));
+            Guard.IsNotNull(service);
+            Guard.IsNotNull(func);
 
-            this._builder.AddSingleton(service, (provider) => func());
+            this._builder.AddSingleton(service, (_) => func());
         }
     }
 }

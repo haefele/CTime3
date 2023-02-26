@@ -13,9 +13,9 @@ namespace CTime3.Apps.CommandLine.Commands
 
         public LogoutCommand(IConfigurationService configurationService, IAnsiConsole ansiConsole)
         {
-            Guard.IsNotNull(configurationService, nameof(configurationService));
-            Guard.IsNotNull(ansiConsole, nameof(ansiConsole));
-            
+            Guard.IsNotNull(configurationService);
+            Guard.IsNotNull(ansiConsole);
+
             this._configurationService = configurationService;
             this._ansiConsole = ansiConsole;
         }
@@ -23,20 +23,20 @@ namespace CTime3.Apps.CommandLine.Commands
         public override async Task<int> ExecuteAsync(CommandContext context)
         {
             var currentUser = this._configurationService.Config.CurrentUser;
-            
+
             if (currentUser is null)
             {
                 this._ansiConsole.MarkupLine("You are [bold]currently not logged in[/].");
                 return ExitCodes.Ok;
             }
 
-            bool logout = this._ansiConsole.Prompt(new ConfirmationPrompt($"You are currently logged in as [bold]{currentUser.FirstName} {currentUser.Name}[/]. Do you really want to logout?") { DefaultValue = false });
+            var logout = this._ansiConsole.Prompt(new ConfirmationPrompt($"You are currently logged in as [bold]{currentUser.FirstName} {currentUser.Name}[/]. Do you really want to logout?") { DefaultValue = false });
             if (logout == false)
                 return ExitCodes.Cancelled;
 
-            await this._configurationService.Modify(config => config with {CurrentUser = null});
+            await this._configurationService.Modify(config => config with { CurrentUser = null });
             this._ansiConsole.MarkupLine($"[green]Logout successful![/]");
-            
+
             return ExitCodes.Ok;
         }
     }
