@@ -1,25 +1,21 @@
-﻿using System;
-using System.IO;
+﻿namespace CTime3.Core.Services.Paths;
 
-namespace CTime3.Core.Services.Paths
+public interface ICTimePaths
 {
-    public interface ICTimePaths
+    string DataDirectory { get; }
+}
+
+public class CTimePaths : ICTimePaths
+{
+    public CTimePaths(string applicationName)
     {
-        string DataDirectory { get; }
+        this.DataDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "haefele",
+            applicationName);
+
+        Directory.CreateDirectory(this.DataDirectory);
     }
 
-    public class CTimePaths : ICTimePaths
-    {
-        public CTimePaths(string applicationName)
-        {
-            this.DataDirectory = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "haefele",
-                applicationName);
-
-            Directory.CreateDirectory(this.DataDirectory);
-        }
-
-        public string DataDirectory { get; }
-    }
+    public string DataDirectory { get; }
 }

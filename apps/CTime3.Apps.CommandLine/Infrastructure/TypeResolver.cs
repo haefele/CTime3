@@ -1,34 +1,31 @@
-﻿using System;
-using CommunityToolkit.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace CTime3.Apps.CommandLine.Infrastructure
+namespace CTime3.Apps.CommandLine.Infrastructure;
+
+public sealed class TypeResolver : ITypeResolver, IDisposable
 {
-    public sealed class TypeResolver : ITypeResolver, IDisposable
+    private readonly IServiceProvider _provider;
+
+    public TypeResolver(IServiceProvider provider)
     {
-        private readonly IServiceProvider _provider;
+        Guard.IsNotNull(provider);
 
-        public TypeResolver(IServiceProvider provider)
+        this._provider = provider;
+    }
+
+    public object? Resolve(Type? type)
+    {
+        return type is null
+            ? null
+            : _provider.GetRequiredService(type);
+    }
+
+    public void Dispose()
+    {
+        if (_provider is IDisposable disposable)
         {
-            Guard.IsNotNull(provider);
-
-            this._provider = provider;
-        }
-
-        public object? Resolve(Type? type)
-        {
-            return type is null
-                ? null
-                : _provider.GetRequiredService(type);
-        }
-
-        public void Dispose()
-        {
-            if (_provider is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
+            disposable.Dispose();
         }
     }
 }

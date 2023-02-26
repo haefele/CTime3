@@ -1,21 +1,17 @@
-﻿using System;
-using CommunityToolkit.Diagnostics;
+﻿namespace CTime3.Core;
 
-namespace CTime3.Core
+public class CTimeException : Exception
 {
-    public class CTimeException : Exception
+    public CTimeException(string message)
+        : base(message)
     {
-        public CTimeException(string message)
-            : base(message)
-        {
-            Guard.IsNotNull(message);
-        }
+        Guard.IsNotNull(message);
+    }
 
-        public CTimeException(string message, Exception inner)
-            : base(message, inner)
-        {
-            Guard.IsNotNull(message);
-            Guard.IsNotNull(inner);
-        }
+    public CTimeException(string message, Exception inner)
+        : base(message, inner)
+    {
+        Guard.IsNotNull(message);
+        Guard.IsNotNull(inner);
     }
 }

@@ -14,4 +14,12 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
   
+  <!-- Usings -->
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="CommunityToolkit.Diagnostics" />
+  </ItemGroup>
+  
 </Project>
