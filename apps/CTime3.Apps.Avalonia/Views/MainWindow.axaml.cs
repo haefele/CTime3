@@ -6,7 +6,6 @@ using CTime3.Core.Services.Clock;
 using CTime3.Core.Services.CTime;
 using CTime3.Core.Services.CTime.ImageCache;
 using CTime3.Core.Services.CTime.RequestCache;
-using CTime3.Core.Services.GeoLocation;
 using Microsoft.Extensions.Logging;
 
 namespace CTime3.Apps.Avalonia.Views;
@@ -35,7 +34,6 @@ public partial class MainWindow : Window
         var messenger = WeakReferenceMessenger.Default;
 
         var employeeImageCache = new EmployeeImageCache();
-        var geoLocationService = new GeoLocationService();
         var nullAnalyticsService = new NullAnalyticsService();
 
         var service = new CTimeService(
@@ -43,7 +41,6 @@ public partial class MainWindow : Window
             requestCache,
             messenger,
             employeeImageCache,
-            geoLocationService,
             realtimeClock,
             nullAnalyticsService);
 

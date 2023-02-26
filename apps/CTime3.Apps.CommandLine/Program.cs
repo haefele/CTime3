@@ -7,7 +7,6 @@ using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
 using CTime3.Core.Services.CTime.ImageCache;
 using CTime3.Core.Services.CTime.RequestCache;
-using CTime3.Core.Services.GeoLocation;
 using CTime3.Core.Services.Paths;
 using CTime3.Core.Services.Statistics;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +53,6 @@ class Program
         collection.AddSingleton<IClock, RealtimeClock>();
         collection.AddSingleton<IMessenger, WeakReferenceMessenger>();
         collection.AddSingleton<IEmployeeImageCache, EmployeeImageCache>();
-        collection.AddSingleton<IGeoLocationService, GeoLocationService>();
         collection.AddSingleton<IAnalyticsService, NullAnalyticsService>();
         collection.AddSingleton<IConfigurationService, LiteDbConfigurationService>();
         collection.AddSingleton<ICTimePaths>(new CTimePaths("c-Time CLI"));

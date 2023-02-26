@@ -25,11 +25,10 @@ public record CurrentUser(
     string CompanyId,
     string? FirstName,
     string? Name,
-    string? EmailAddress,
-    bool SupportsGeoLocation)
+    string? EmailAddress)
 {
     public static CurrentUser FromUser(User user)
     {
-        return new(user.Id, user.CompanyId, user.FirstName, user.Name, user.Email, user.SupportsGeoLocation);
+        return new(user.Id, user.CompanyId, user.FirstName, user.Name, user.Email);
     }
 }

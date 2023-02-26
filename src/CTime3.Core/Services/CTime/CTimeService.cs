@@ -2,7 +2,6 @@
 using CTime3.Core.Services.Analytics;
 using CTime3.Core.Services.Clock;
 using CTime3.Core.Services.CTime.RequestCache;
-using CTime3.Core.Services.GeoLocation;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Polly;
@@ -26,18 +25,16 @@ public class CTimeService : ICTimeService, IDisposable
     private readonly ICTimeRequestCache _requestCache;
     private readonly IMessenger _messenger;
     private readonly IEmployeeImageCache _employeeImageCache;
-    private readonly IGeoLocationService _geoLocationService;
     private readonly IClock _clock;
     private readonly IAnalyticsService _analyticsService;
     private readonly HttpClient _client;
 
-    public CTimeService(ILogger<CTimeService> logger, ICTimeRequestCache requestCache, IMessenger messenger, IEmployeeImageCache employeeImageCache, IGeoLocationService geoLocationService, IClock clock, IAnalyticsService analyticsService)
+    public CTimeService(ILogger<CTimeService> logger, ICTimeRequestCache requestCache, IMessenger messenger, IEmployeeImageCache employeeImageCache, IClock clock, IAnalyticsService analyticsService)
     {
         Guard.IsNotNull(logger);
         Guard.IsNotNull(requestCache);
         Guard.IsNotNull(messenger);
         Guard.IsNotNull(employeeImageCache);
-        Guard.IsNotNull(geoLocationService);
         Guard.IsNotNull(clock);
         Guard.IsNotNull(analyticsService);
 
@@ -45,7 +42,6 @@ public class CTimeService : ICTimeService, IDisposable
         this._requestCache = requestCache;
         this._messenger = messenger;
         this._employeeImageCache = employeeImageCache;
-        this._geoLocationService = geoLocationService;
         this._clock = clock;
         this._analyticsService = analyticsService;
         this._client = new HttpClient();
@@ -80,7 +76,6 @@ public class CTimeService : ICTimeService, IDisposable
                 FirstName = user.Value<string>("EmployeeFirstName"),
                 Name = user.Value<string>("EmployeeName"),
                 ImageAsPng = user.ValueAsBase64Array("EmployeePhoto"),
-                SupportsGeoLocation = user.Value<int>("GeolocationAllowed") == 1,
                 CompanyImageAsPng = user.ValueAsBase64Array("CompanyImage"),
             };
         }
@@ -152,14 +147,10 @@ public class CTimeService : ICTimeService, IDisposable
         }
     }
 
-    public async Task SaveTimer(string employeeGuid, string? rfidKey, DateTime time, string companyId, TimeState state, bool withGeolocation)
+    public async Task SaveTimer(string employeeGuid, string? rfidKey, DateTime time, string companyId, TimeState state)
     {
         try
         {
-            var location = withGeolocation
-                ? await this._geoLocationService.TryGetGeoLocationAsync()
-                : null;
-
             var data = new Dictionary<string, string>
             {
                 {"TimerKind", ((int) state).ToString()},
@@ -168,8 +159,8 @@ public class CTimeService : ICTimeService, IDisposable
                 {"EmployeeGUID", employeeGuid},
                 {"GUID", companyId},
                 {"RFID", rfidKey ?? string.Empty},
-                {"lat", location?.Latitude.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
-                {"long", location?.Longitude.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+                {"lat", string.Empty },
+                {"long", string.Empty },
                 {"APPGUID", CTimeUniversalAppGuid },
             };
 
