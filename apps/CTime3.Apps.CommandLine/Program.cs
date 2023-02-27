@@ -39,6 +39,9 @@ class Program
 
             f.AddCommand<StatusCommand>("status")
                 .WithDescription("Shows whether you're currently checked-in or not, and your current time.");
+
+            f.AddCommand<ListUsersCommand>("list-users")
+                .WithDescription("Shows a list of all users in your company.");
         });
 
         return await app.RunAsync(args);

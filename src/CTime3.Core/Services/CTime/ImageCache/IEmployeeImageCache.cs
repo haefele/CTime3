@@ -4,6 +4,6 @@ public interface IEmployeeImageCache
 {
     string? ImageCacheEtag { get; set; }
 
-    Task FillWithCachedImages(Dictionary<int, AttendingUser> users);
-    Task CacheImagesAsync(Dictionary<int, AttendingUser> users);
+    Task FillWithCachedImages(List<AttendingUser> users);
+    Task CacheImagesAsync(List<AttendingUser> users);
 }

@@ -236,36 +236,33 @@ public class CTimeService : ICTimeService, IDisposable
                 .Select(f => f.Value<string>("cacheDate"))
                 .FirstOrDefault();
 
+            this._employeeImageCache.ImageCacheEtag = newCacheEtag;
+
             var defaultImageAsBase64 = Convert.ToBase64String(defaultImage ?? Array.Empty<byte>());
 
             var result = responseJson
                 .Value<JArray>("Result")!
                 .Cast<JObject>()
-                .Select(f => new
+                .Select(f => new AttendingUser
                 {
-                    EmployeeI3D = f.Value<int>("EmployeeI3D"),
-                    Employee = new AttendingUser
+                    Id = f.Value<int>("EmployeeI3D"),
+                    Name = f.Value<string>("EmployeeName"),
+                    FirstName = f.Value<string>("EmployeeFirstName"),
+                    AttendanceState = new AttendanceState
                     {
-                        Id = f.Value<int>("EmployeeI3D").ToString(),
-                        Name = f.Value<string>("EmployeeName"),
-                        FirstName = f.Value<string>("EmployeeFirstName"),
-                        AttendanceState = new AttendanceState
-                        {
-                            IsAttending = f.Value<int>("PresenceStatus") == 1,
-                            Name = this.ParseAttendanceStateName(f.Value<string>("TimerTypeDescription"), f.Value<int?>("TimeTrackTypePure"), f.Value<int>("PresenceStatus") == 1),
-                            Color = this.ParseColor(f.Value<string>("EnumColor"), f.Value<int?>("TimeTrackTypePure")),
-                        },
-                        ImageAsPng = Convert.FromBase64String(f.Value<string>("EmployeePhoto") ?? defaultImageAsBase64),
-                        EmailAddress = f.Value<string>("EmployeeEmail"),
-                        PhoneNumber = f.Value<string>("EmployeePhone"),
-                        Departments = f.Value<string>("EmployeeGroups")
-                            ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                            .Select(d => d.Trim())
-                            .ToArray() ?? Array.Empty<string>(),
-                    }
+                        IsAttending = f.Value<int>("PresenceStatus") == 1,
+                        Name = this.ParseAttendanceStateName(f.Value<string>("TimerTypeDescription"), f.Value<int?>("TimeTrackTypePure"), f.Value<int>("PresenceStatus") == 1),
+                        Color = this.ParseColor(f.Value<string>("EnumColor"), f.Value<int?>("TimeTrackTypePure")),
+                    },
+                    ImageAsPng = Convert.FromBase64String(f.Value<string>("EmployeePhoto") ?? defaultImageAsBase64),
+                    EmailAddress = f.Value<string>("EmployeeEmail"),
+                    PhoneNumber = f.Value<string>("EmployeePhone"),
+                    Departments = f.Value<string>("EmployeeGroups")
+                        ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                        .Select(d => d.Trim())
+                        .ToArray() ?? Array.Empty<string>(),
                 })
-                .GroupBy(f => f.EmployeeI3D)
-                .ToDictionary(f => f.Key, f => f.Select(d => d.Employee).First());
+                .ToList();
 
             if (newCacheEtag == currentCacheEtag)
             {
@@ -276,7 +273,7 @@ public class CTimeService : ICTimeService, IDisposable
                 await this._employeeImageCache.CacheImagesAsync(result);
             }
 
-            return result.Select(f => f.Value).ToList();
+            return result;
         }
         catch (Exception exception) when (exception is CTimeException == false)
         {

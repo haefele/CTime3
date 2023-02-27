@@ -2,10 +2,12 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.Messaging;
 using CTime3.Core.Services.Analytics;
+using CTime3.Core.Services.ApplicationEnvironment;
 using CTime3.Core.Services.Clock;
 using CTime3.Core.Services.CTime;
 using CTime3.Core.Services.CTime.ImageCache;
 using CTime3.Core.Services.CTime.RequestCache;
+using CTime3.Core.Services.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace CTime3.Apps.Avalonia.Views;
@@ -32,8 +34,9 @@ public partial class MainWindow : Window
         var realtimeClock = new RealtimeClock();
         var requestCache = new CTimeRequestCache(realtimeClock);
         var messenger = WeakReferenceMessenger.Default;
-
-        var employeeImageCache = new EmployeeImageCache();
+        var applicationEnvironment = new ApplicationEnvironment("haefele", "Avalonia Test");
+        var liteDbStorageService = new LiteDBStorageService(applicationEnvironment);
+        var employeeImageCache = new EmployeeImageCache(liteDbStorageService);
         var nullAnalyticsService = new NullAnalyticsService();
 
         var service = new CTimeService(

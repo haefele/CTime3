@@ -1,70 +1,40 @@
-﻿namespace CTime3.Core.Services.CTime.ImageCache;
+﻿using CTime3.Core.Services.Storage;
+
+namespace CTime3.Core.Services.CTime.ImageCache;
 
 public class EmployeeImageCache : IEmployeeImageCache
 {
-    public string? ImageCacheEtag { get; set; } //TODO: Implement
+    private readonly IStorageService _storageService;
 
-    public async Task FillWithCachedImages(Dictionary<int, AttendingUser> users)
+    public string? ImageCacheEtag
+    {
+        get => this._storageService.GetAsync<string>("image_cache_etag", 1).Result;
+        set => this._storageService.StoreAsync("image_cache_etag", 1, value).Wait();
+    }
+
+    public EmployeeImageCache(IStorageService storageService)
+    {
+        Guard.IsNotNull(storageService);
+
+        this._storageService = storageService;
+    }
+
+    public async Task FillWithCachedImages(List<AttendingUser> users)
     {
         foreach (var user in users)
         {
-            var cachedImage = await this.GetCachedImageAsync(user.Key);
+            var cachedImage = await this._storageService.GetAsync<byte[]>("image_cache", user.Id);
 
             if (cachedImage is { Length: > 0 })
-                user.Value.ImageAsPng = cachedImage;
+                user.ImageAsPng = cachedImage;
         }
     }
 
-    private async Task<byte[]?> GetCachedImageAsync(int employeeI3D)
-    {
-        var imageFileName = this.GetImageFileName(employeeI3D);
-        var imagesFolder = this.GetImagesFolderAsync();
-        var imageFilePath = Path.Combine(imagesFolder.FullName, imageFileName);
-
-        if (File.Exists(imageFilePath) == false)
-            return null;
-
-        return await File.ReadAllBytesAsync(imageFilePath);
-    }
-
-    public async Task CacheImagesAsync(Dictionary<int, AttendingUser> users)
+    public async Task CacheImagesAsync(List<AttendingUser> users)
     {
         foreach (var user in users)
         {
-            await this.CacheImageAsync(user.Key, user.Value.ImageAsPng);
+            await this._storageService.StoreAsync("image_cache", user.Id, user.ImageAsPng);
         }
-    }
-
-    private async Task CacheImageAsync(int employeeI3D, byte[] image)
-    {
-        var imageFileName = this.GetImageFileName(employeeI3D);
-        var imagesFolder = this.GetImagesFolderAsync();
-        var imageFilePath = Path.Combine(imagesFolder.FullName, imageFileName);
-
-        if (File.Exists(imageFilePath))
-            File.Delete(imageFilePath);
-
-        await File.WriteAllBytesAsync(imageFilePath, image);
-    }
-
-    private string GetImageFileName(int employeeI3D)
-    {
-        return $"AttendingUser-{employeeI3D}.png";
-    }
-
-    private DirectoryInfo GetImagesFolderAsync()
-    {
-        var path = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "haefele",
-            "CTime3",
-            "ImageCache");
-
-        var directory = new DirectoryInfo(path);
-
-        if (directory.Exists == false)
-            directory.Create();
-
-        return directory;
     }
 }
