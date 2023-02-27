@@ -10,6 +10,7 @@ public class CTimeRequestCache : ICTimeRequestCache
 
     private readonly IClock _clock;
 
+    // NOTE: Consider using Microsoft.Extensions.Caching.Memory.MemoryCache instead of a ConcurrentDictionary
     private readonly ConcurrentDictionary<string, ValueHolder> _cache;
 
     public CTimeRequestCache(IClock clock)
