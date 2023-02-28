@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTime3.Apps.CommandLine", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTime3.Apps.Avalonia", "apps\CTime3.Apps.Avalonia\CTime3.Apps.Avalonia.csproj", "{D29D1736-87A8-41D0-9F04-260D59303756}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployment", "deployment", "{8691FAF2-4F9F-47A4-9B5F-400EE573B6F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTime3.Scripts", "deployment\CTime3.Scripts\CTime3.Scripts.csproj", "{FB5DB124-6D83-48FF-8B69-4DD880FC35A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{D29D1736-87A8-41D0-9F04-260D59303756}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D29D1736-87A8-41D0-9F04-260D59303756}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D29D1736-87A8-41D0-9F04-260D59303756}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB5DB124-6D83-48FF-8B69-4DD880FC35A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB5DB124-6D83-48FF-8B69-4DD880FC35A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB5DB124-6D83-48FF-8B69-4DD880FC35A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB5DB124-6D83-48FF-8B69-4DD880FC35A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +55,7 @@ Global
 		{65489AA0-71AF-4B3F-96C1-0BE4C37D1B1D} = {33F54611-1848-4689-BB01-D50A5406ABD3}
 		{DF449D70-EB16-461C-B6B7-9EC285CDCD93} = {B2184B07-BCF2-4B95-AC19-3F0108596757}
 		{D29D1736-87A8-41D0-9F04-260D59303756} = {B2184B07-BCF2-4B95-AC19-3F0108596757}
+		{FB5DB124-6D83-48FF-8B69-4DD880FC35A8} = {8691FAF2-4F9F-47A4-9B5F-400EE573B6F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C0BF017-F422-478D-932A-B0533C5C2922}

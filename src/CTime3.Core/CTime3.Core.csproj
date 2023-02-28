@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
+  <ItemGroup Label="Packages">
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.1.0" />
     <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.1.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
@@ -10,8 +10,11 @@
     <PackageReference Include="Polly" Version="7.2.3" />
   </ItemGroup>
 
-  <!-- Messages Resource File -->
-  <ItemGroup>
+  <ItemGroup Label="Usings">
+    <Using Include="CommunityToolkit.Diagnostics" />
+  </ItemGroup>
+
+  <ItemGroup Label="Messages Resource File">
     <Compile Update="Resources\Messages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -1,25 +1,17 @@
 <Project>
   
-  <!-- Default properties used for all projects -->
-  <PropertyGroup>
+  <PropertyGroup Label="Default-Properties">
     <TargetFramework>net7.0</TargetFramework>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>    
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
-  <!-- Code-Style -->
-  <PropertyGroup>
+  <PropertyGroup Label="Code-Style">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-  </PropertyGroup>
-  
-  <!-- Usings -->
-  <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  <ItemGroup>
-    <Using Include="CommunityToolkit.Diagnostics" />
-  </ItemGroup>
   
 </Project>
