@@ -1,14 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using CommunityToolkit.Mvvm.Messaging;
-using CTime3.Core.Services.Analytics;
-using CTime3.Core.Services.ApplicationEnvironment;
-using CTime3.Core.Services.Clock;
+using CTime3.Core;
 using CTime3.Core.Services.CTime;
-using CTime3.Core.Services.CTime.ImageCache;
-using CTime3.Core.Services.CTime.RequestCache;
-using CTime3.Core.Services.Storage;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CTime3.Apps.Avalonia.Views;
 
@@ -22,31 +16,22 @@ public partial class MainWindow : Window
     private async void Button_OnClick(object? sender, RoutedEventArgs e)
     {
         var service = CreateCTimeService();
-        var user = await service.Login("haefele@c-entron.de", "Start1234!");
+        var user = await service.Login("haefele@c-entron.de", "");
         var attendingUsers = await service.GetAttendingUsers(user!.CompanyId, Array.Empty<byte>());
 
 
     }
 
-    private static CTimeService CreateCTimeService()
+    private static ICTimeService CreateCTimeService()
     {
-        var logger = new Logger<CTimeService>(new LoggerFactory(Enumerable.Empty<ILoggerProvider>()));
-        var realtimeClock = new RealtimeClock();
-        var requestCache = new CTimeRequestCache(realtimeClock);
-        var messenger = WeakReferenceMessenger.Default;
-        var applicationEnvironment = new ApplicationEnvironment("haefele", "Avalonia Test");
-        var liteDbStorageService = new LiteDBStorageService(applicationEnvironment);
-        var employeeImageCache = new EmployeeImageCache(liteDbStorageService);
-        var nullAnalyticsService = new NullAnalyticsService();
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddCTimeServices(o =>
+        {
+            o.AppName = "c-Time Avalonia";
+            o.CompanyName = "haefele";
+        });
 
-        var service = new CTimeService(
-            logger,
-            requestCache,
-            messenger,
-            employeeImageCache,
-            realtimeClock,
-            nullAnalyticsService);
-
-        return service;
+        var provider = serviceCollection.BuildServiceProvider();
+        return provider.GetRequiredService<ICTimeService>();
     }
 }

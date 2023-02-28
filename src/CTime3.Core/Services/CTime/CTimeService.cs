@@ -10,8 +10,9 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using CommunityToolkit.Mvvm.Messaging;
+using CTime3.Core.Services.ApplicationEnvironment;
 using CTime3.Core.Services.CTime.ImageCache;
-
+using Microsoft.Extensions.Options;
 using static CTime3.Core.Extensions.StringExtensions;
 using static CTime3.Core.Extensions.JsonExtensions;
 
@@ -19,17 +20,16 @@ namespace CTime3.Core.Services.CTime;
 
 public class CTimeService : ICTimeService, IDisposable
 {
-    private const string CTimeUniversalAppGuid = "0C86E131-7ABB-4AC4-AA5E-29B8F00E7F2B";
-
     private readonly ILogger<CTimeService> _logger;
     private readonly ICTimeRequestCache _requestCache;
     private readonly IMessenger _messenger;
     private readonly IEmployeeImageCache _employeeImageCache;
     private readonly IClock _clock;
     private readonly IAnalyticsService _analyticsService;
+    private readonly IOptionsMonitor<CTimeApplicationOptions> _ctimeApplicationOptions;
     private readonly HttpClient _client;
 
-    public CTimeService(ILogger<CTimeService> logger, ICTimeRequestCache requestCache, IMessenger messenger, IEmployeeImageCache employeeImageCache, IClock clock, IAnalyticsService analyticsService)
+    public CTimeService(ILogger<CTimeService> logger, ICTimeRequestCache requestCache, IMessenger messenger, IEmployeeImageCache employeeImageCache, IClock clock, IAnalyticsService analyticsService, IOptionsMonitor<CTimeApplicationOptions> ctimeApplicationOptions)
     {
         Guard.IsNotNull(logger);
         Guard.IsNotNull(requestCache);
@@ -37,6 +37,7 @@ public class CTimeService : ICTimeService, IDisposable
         Guard.IsNotNull(employeeImageCache);
         Guard.IsNotNull(clock);
         Guard.IsNotNull(analyticsService);
+        Guard.IsNotNull(ctimeApplicationOptions);
 
         this._logger = logger;
         this._requestCache = requestCache;
@@ -44,6 +45,7 @@ public class CTimeService : ICTimeService, IDisposable
         this._employeeImageCache = employeeImageCache;
         this._clock = clock;
         this._analyticsService = analyticsService;
+        this._ctimeApplicationOptions = ctimeApplicationOptions;
         this._client = new HttpClient();
     }
 
@@ -56,7 +58,7 @@ public class CTimeService : ICTimeService, IDisposable
                 {"Password", this.GetHashedPassword(password)},
                 {"LoginName", emailAddress},
                 {"Crypt", 1.ToString()},
-                {"APPGUID", CTimeUniversalAppGuid },
+                {"APPGUID", this._ctimeApplicationOptions.CurrentValue.CTimeApiAppGuid },
             };
             var responseJson = await this.SendRequestAsync("LoginV2.php", data, canBeCached: false);
 
@@ -98,7 +100,7 @@ public class CTimeService : ICTimeService, IDisposable
                 {"DateTill", end.ToString("yyyy-MM-dd")},
                 {"DateFrom", start.ToString("yyyy-MM-dd")},
                 {"Summary", 1.ToString()},
-                {"APPGUID", CTimeUniversalAppGuid },
+                {"APPGUID", this._ctimeApplicationOptions.CurrentValue.CTimeApiAppGuid },
             });
 
             if (responseJson?.Value<JArray>("Result") is null)
@@ -161,7 +163,7 @@ public class CTimeService : ICTimeService, IDisposable
                 {"RFID", rfidKey ?? string.Empty},
                 {"lat", string.Empty },
                 {"long", string.Empty },
-                {"APPGUID", CTimeUniversalAppGuid },
+                {"APPGUID", this._ctimeApplicationOptions.CurrentValue.CTimeApiAppGuid },
             };
 
             var responseJson = await this.SendRequestAsync("SaveTimerV2.php", data, canBeCached: false);
@@ -224,7 +226,7 @@ public class CTimeService : ICTimeService, IDisposable
             {
                 {"GUID", companyId},
                 {"cacheDate", currentCacheEtag ?? string.Empty },
-                {"APPGUID", CTimeUniversalAppGuid },
+                {"APPGUID", this._ctimeApplicationOptions.CurrentValue.CTimeApiAppGuid },
             });
 
             if (responseJson is null || responseJson.Value<JArray>("Result") is null)
@@ -390,12 +392,7 @@ public class CTimeService : ICTimeService, IDisposable
 
     private Uri BuildUri(string function)
     {
-        var baseUri = this.GetBaseUri();
-        return new Uri($"{baseUri}{function}");
-    }
-
-    private string GetBaseUri()
-    {
-        return "https://api.c-time.net/";
+        var baseUri = this._ctimeApplicationOptions.CurrentValue.CTimeApiBaseUrl;
+        return new Uri($"{baseUri.TrimEnd('/')}/{function}");
     }
 }

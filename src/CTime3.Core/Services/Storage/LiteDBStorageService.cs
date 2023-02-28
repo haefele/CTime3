@@ -1,5 +1,6 @@
 ﻿using CTime3.Core.Services.ApplicationEnvironment;
 using LiteDB;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace CTime3.Core.Services.Storage;
@@ -8,15 +9,15 @@ public class LiteDBStorageService : IStorageService, IDisposable
 {
     private readonly LiteDatabase _db;
 
-    public LiteDBStorageService(IApplicationEnvironment applicationEnvironment)
+    public LiteDBStorageService(IOptions<CTimeApplicationOptions> ctimeApplicationOptions)
     {
-        Guard.IsNotNull(applicationEnvironment);
+        Guard.IsNotNull(ctimeApplicationOptions);
 
-        // NOTE: Consider checking applicationEnvironment.CompanyName and applicationEnvironment.AppName for valid file path characters
+        // NOTE: Consider checking ctimeApplicationOptions.Value.CompanyName and ctimeApplicationOptions.Value.AppName for valid file path characters
         var directoryPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            applicationEnvironment.CompanyName,
-            applicationEnvironment.AppName);
+            ctimeApplicationOptions.Value.CompanyName,
+            ctimeApplicationOptions.Value.AppName);
 
         Directory.CreateDirectory(directoryPath);
 
