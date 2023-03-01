@@ -23,12 +23,13 @@ public record Configuration(
 public record CurrentUser(
     string Id,
     string CompanyId,
+    string? CompanyName,
     string? FirstName,
     string? Name,
-    string? EmailAddress)
+    string? LoginName)
 {
     public static CurrentUser FromUser(User user)
     {
-        return new(user.Id, user.CompanyId, user.FirstName, user.Name, user.Email);
+        return new(user.Id, user.CompanyId, user.CompanyName, user.FirstName, user.Name, user.LoginName);
     }
 }

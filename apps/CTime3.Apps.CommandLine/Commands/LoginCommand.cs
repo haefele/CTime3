@@ -32,7 +32,7 @@ public class LoginCommand : AsyncCommand
                 return ExitCodes.Cancelled;
         }
 
-        var emailAddress = this._ansiConsole.Ask<string>("Please enter your c-Time [bold]email address[/]:");
+        var username = this._ansiConsole.Ask<string>("Please enter your c-Time [bold]username[/]:");
         var password = this._ansiConsole.Prompt(new TextPrompt<string>("And your c-Time [bold]password[/]:")
         {
             IsSecret = true,
@@ -42,12 +42,12 @@ public class LoginCommand : AsyncCommand
         await this._ansiConsole.Status()
             .StartAsync("Logging in...", async _ =>
             {
-                user = await this._cTimeService.Login(emailAddress, password);
+                user = await this._cTimeService.Login(username, password);
             });
 
         if (user is null)
         {
-            this._ansiConsole.MarkupLine("[red]Login failed![/] Please make sure you entered your [bold]email address[/] and [bold]password[/] correctly.");
+            this._ansiConsole.MarkupLine("[red]Login failed![/] Please make sure you entered your [bold]username[/] and [bold]password[/] correctly.");
             return ExitCodes.Failed;
         }
 

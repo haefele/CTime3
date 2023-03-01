@@ -4,11 +4,12 @@ public class User
 {
     public string Id { get; set; } = string.Empty;
     public string CompanyId { get; set; } = string.Empty;
+    public string? CompanyName { get; set; }
     public string? FirstName { get; set; }
     public string? Name { get; set; }
-    public string? Email { get; set; }
-    public byte[]? ImageAsPng { get; set; }
-    public byte[]? CompanyImageAsPng { get; set; }
+    public string? LoginName { get; set; }
+    public string? ImageUrl { get; set; }
+    public string? CompanyImageUrl { get; set; }
 }
 
 public class Time

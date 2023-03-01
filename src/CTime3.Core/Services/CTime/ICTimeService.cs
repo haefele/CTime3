@@ -2,7 +2,7 @@
 
 public interface ICTimeService
 {
-    Task<User?> Login(string emailAddress, string password);
+    Task<User?> Login(string username, string password);
     Task<List<Time>> GetTimes(string employeeGuid, DateTime start, DateTime end);
     Task SaveTimer(string employeeGuid, string? rfidKey, DateTime time, string companyId, TimeState state);
     Task<Time?> GetCurrentTime(string employeeGuid);

@@ -49,18 +49,17 @@ public class CTimeService : ICTimeService, IDisposable
         this._client = new HttpClient();
     }
 
-    public async Task<User?> Login(string emailAddress, string password)
+    public async Task<User?> Login(string username, string password)
     {
         try
         {
             var data = new Dictionary<string, string>
             {
                 {"Password", this.GetHashedPassword(password)},
-                {"LoginName", emailAddress},
-                {"Crypt", 1.ToString()},
+                {"LoginName", username},
                 {"APPGUID", this._ctimeApplicationOptions.CurrentValue.CTimeApiAppGuid },
             };
-            var responseJson = await this.SendRequestAsync("LoginV2.php", data, canBeCached: false);
+            var responseJson = await this.SendRequestAsync("v4/login.php", data, canBeCached: false);
 
             var user = responseJson
                 ?.Value<JArray>("Result")
@@ -74,16 +73,17 @@ public class CTimeService : ICTimeService, IDisposable
             {
                 Id = user.Value<string>("EmployeeGUID")!,
                 CompanyId = user.Value<string>("CompanyGUID")!,
-                Email = user.Value<string>("LoginName"),
+                CompanyName = user.Value<string>("CompanyName"),
+                LoginName = user.Value<string>("LoginName"),
                 FirstName = user.Value<string>("EmployeeFirstName"),
                 Name = user.Value<string>("EmployeeName"),
-                ImageAsPng = user.ValueAsBase64Array("EmployeePhoto"),
-                CompanyImageAsPng = user.ValueAsBase64Array("CompanyImage"),
+                ImageUrl = this.BuildImageUrl(user.Value<string>("EmployeePhotoName")),
+                CompanyImageUrl = this.BuildImageUrl(user.Value<string>("CompanyImageName")),
             };
         }
         catch (Exception exception) when (exception is CTimeException == false)
         {
-            this._logger.LogWarning(exception, "Exception in method {Method}. Email address: {EmailAddress}", nameof(Login), emailAddress);
+            this._logger.LogWarning(exception, "Exception in method {Method}. Username: {Username}", nameof(Login), username);
             this._analyticsService.TrackException(exception);
 
             throw new CTimeException(Messages.CTimeService_ErrorWhileLogin, exception);
@@ -394,5 +394,13 @@ public class CTimeService : ICTimeService, IDisposable
     {
         var baseUri = this._ctimeApplicationOptions.CurrentValue.CTimeApiBaseUrl;
         return new Uri($"{baseUri.TrimEnd('/')}/{function}");
+    }
+
+    private string? BuildImageUrl(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        return string.Format(this._ctimeApplicationOptions.CurrentValue.CTimeImageUrlFormat, value);
     }
 }
