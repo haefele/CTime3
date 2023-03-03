@@ -1,9 +1,10 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
-using CTime3.Apps.WPF.Models;
 using CTime3.Apps.WPF.Services;
+using CTime3.Apps.WPF.Views.Login;
+using CTime3.Apps.WPF.Views.Settings;
+using CTime3.Apps.WPF.Views.Windows;
+using CTime3.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,57 +18,37 @@ namespace CTime3.Apps.WPF
     /// </summary>
     public partial class App
     {
-        // The.NET Generic Host provides dependency injection, configuration, logging, and other services.
-        // https://docs.microsoft.com/dotnet/core/extensions/generic-host
-        // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
-        // https://docs.microsoft.com/dotnet/core/extensions/configuration
-        // https://docs.microsoft.com/dotnet/core/extensions/logging
         private static readonly IHost s_host = Host
             .CreateDefaultBuilder()
-            .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
-            .ConfigureServices((context, services) =>
+            .ConfigureAppConfiguration(c => { c.SetBasePath(AppContext.BaseDirectory); })
+            .ConfigureServices(services =>
             {
                 // App Host
-                services.AddHostedService<ApplicationHostService>();
+                services.AddHostedService<ShowMainWindowHostedService>();
 
-                // Page resolver service
+                // Services
                 services.AddSingleton<IPageService, PageService>();
-
-                // Theme manipulation
                 services.AddSingleton<IThemeService, ThemeService>();
-
-                // TaskBar manipulation
-                services.AddSingleton<ITaskBarService, TaskBarService>();
-
-                // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
 
                 // Main window with navigation
-                services.AddScoped<INavigationWindow, Views.Windows.MainWindow>();
-                services.AddScoped<ViewModels.MainWindowViewModel>();
+                services.AddScoped<MainWindow>();
+                services.AddScoped<MainWindowViewModel>();
 
                 // Views and ViewModels
-                services.AddScoped<Views.Pages.DashboardPage>();
-                services.AddScoped<ViewModels.DashboardViewModel>();
-                services.AddScoped<Views.Pages.DataPage>();
-                services.AddScoped<ViewModels.DataViewModel>();
-                services.AddScoped<Views.Pages.SettingsPage>();
-                services.AddScoped<ViewModels.SettingsViewModel>();
+                services.AddScoped<LoginPage>();
+                services.AddScoped<LoginPageViewModel>();
 
-                // Configuration
-                services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+                services.AddScoped<SettingsPage>();
+                services.AddScoped<SettingsViewModel>();
+
+                // CTime Services
+                services.AddCTimeServices(o =>
+                {
+                    o.CompanyName = "haefele";
+                    o.AppName = "c-Time Fluent";
+                });
             }).Build();
-
-        /// <summary>
-        /// Gets registered service.
-        /// </summary>
-        /// <typeparam name="T">Type of the service to get.</typeparam>
-        /// <returns>Instance of the service or <see langword="null"/>.</returns>
-        public static T? GetService<T>()
-            where T : class
-        {
-            return s_host.Services.GetService(typeof(T)) as T;
-        }
 
         /// <summary>
         /// Occurs when the application is loading.

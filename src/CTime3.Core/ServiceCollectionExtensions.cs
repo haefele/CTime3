@@ -8,6 +8,7 @@ using CTime3.Core.Services.CTime.ImageCache;
 using CTime3.Core.Services.CTime.RequestCache;
 using CTime3.Core.Services.Statistics;
 using CTime3.Core.Services.Storage;
+using CTime3.Core.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CTime3.Core;
@@ -19,8 +20,10 @@ public static class ServiceCollectionExtensions
         Guard.IsNotNull(self);
         Guard.IsNotNull(configure);
 
+        // Logging
         self.AddLogging();
 
+        // Services
         self.AddSingleton<ICTimeService, CTimeService>();
         self.AddSingleton<ICTimeRequestCache, CTimeRequestCache>();
         self.AddSingleton<IClock, RealtimeClock>();
@@ -31,6 +34,10 @@ public static class ServiceCollectionExtensions
         self.AddSingleton<IStorageService, LiteDBStorageService>();
         self.AddSingleton<IStatisticsService, StatisticsService>();
 
+        // ViewModels
+        self.AddTransient<LoginViewModel>();
+
+        // Options
         self.AddOptions<CTimeApplicationOptions>()
             .Configure(configure)
             .Validate(o =>
@@ -39,6 +46,15 @@ public static class ServiceCollectionExtensions
                         return false;
 
                     if (string.IsNullOrWhiteSpace(o.AppName))
+                        return false;
+
+                    if (string.IsNullOrWhiteSpace(o.CTimeApiAppGuid))
+                        return false;
+
+                    if (string.IsNullOrWhiteSpace(o.CTimeApiBaseUrl))
+                        return false;
+
+                    if (string.IsNullOrWhiteSpace(o.CTimeImageUrlFormat))
                         return false;
 
                     return true;

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using CommunityToolkit.Diagnostics;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace CTime3.Apps.WPF.Services
@@ -9,20 +9,15 @@ namespace CTime3.Apps.WPF.Services
     /// </summary>
     public class PageService : IPageService
     {
-        /// <summary>
-        /// Service which provides the instances of pages.
-        /// </summary>
         private readonly IServiceProvider _serviceProvider;
 
-        /// <summary>
-        /// Creates new instance and attaches the <see cref="IServiceProvider"/>.
-        /// </summary>
         public PageService(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            Guard.IsNotNull(serviceProvider);
+
+            this._serviceProvider = serviceProvider;
         }
 
-        /// <inheritdoc />
         public T? GetPage<T>() where T : class
         {
             if (!typeof(FrameworkElement).IsAssignableFrom(typeof(T)))
@@ -31,7 +26,6 @@ namespace CTime3.Apps.WPF.Services
             return (T?)_serviceProvider.GetService(typeof(T));
         }
 
-        /// <inheritdoc />
         public FrameworkElement? GetPage(Type pageType)
         {
             if (!typeof(FrameworkElement).IsAssignableFrom(pageType))
