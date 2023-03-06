@@ -20,8 +20,7 @@ namespace CTime3.Apps.WPF.Views.Windows
 
             this.InitializeComponent();
 
-            // TODO
-            RootNavigation.PageService = pageService;
+            this.RootNavigation.PageService = pageService;
             navigationService.SetPageService(pageService);
             navigationService.SetNavigationControl(this.RootNavigation);
         }

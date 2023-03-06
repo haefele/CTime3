@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CTime3.Core.Services.Analytics;
-using CTime3.Core.Services.ApplicationEnvironment;
 using CTime3.Core.Services.Clock;
 using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;

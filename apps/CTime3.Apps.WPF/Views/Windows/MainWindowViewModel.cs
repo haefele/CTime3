@@ -2,7 +2,7 @@
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CTime3.Apps.WPF.Views.Login;
-using CTime3.Core.Services.ApplicationEnvironment;
+using CTime3.Core;
 using Microsoft.Extensions.Options;
 using Wpf.Ui.Common;
 using Wpf.Ui.Controls;

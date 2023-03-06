@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using CommunityToolkit.Diagnostics;
 using Wpf.Ui.Common.Interfaces;
 
@@ -9,11 +10,17 @@ public partial class LoginPage
     public LoginPage(LoginPageViewModel viewModel)
     {
         Guard.IsNotNull(viewModel);
-        this.DataContext = this.ViewModel = viewModel;
+
+        this.DataContext = viewModel;
 
         this.InitializeComponent();
     }
 
-    public LoginPageViewModel ViewModel { get; }
+    public LoginPageViewModel ViewModel => (LoginPageViewModel)this.DataContext;
+
+    private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
+    {
+        this.ViewModel.Core.Password = ((Wpf.Ui.Controls.PasswordBox)sender).Password;
+    }
 }
 

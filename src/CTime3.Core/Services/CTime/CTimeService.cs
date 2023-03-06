@@ -10,7 +10,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using CommunityToolkit.Mvvm.Messaging;
-using CTime3.Core.Services.ApplicationEnvironment;
 using CTime3.Core.Services.CTime.ImageCache;
 using Microsoft.Extensions.Options;
 using static CTime3.Core.Extensions.StringExtensions;

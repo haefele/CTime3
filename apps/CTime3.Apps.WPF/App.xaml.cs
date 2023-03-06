@@ -40,7 +40,7 @@ namespace CTime3.Apps.WPF
                 services.AddScoped<LoginPageViewModel>();
 
                 services.AddScoped<SettingsPage>();
-                services.AddScoped<SettingsViewModel>();
+                services.AddScoped<SettingsPageViewModel>();
 
                 // CTime Services
                 services.AddCTimeServices(o =>

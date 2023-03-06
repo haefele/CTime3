@@ -3,16 +3,56 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:local="clr-namespace:CTime3.Apps.WPF.Views.Login"
            xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+           xmlns:valueConverters="clr-namespace:ValueConverters;assembly=ValueConverters"
            
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            mc:Ignorable="d"
            
            d:DataContext="{d:DesignInstance local:LoginPageViewModel, IsDesignTimeCreatable=False}">
-    <StackPanel Orientation="Vertical">
-        <ui:TextBox PlaceholderText="Username" Text="{Binding Inner.LoginName, UpdateSourceTrigger=PropertyChanged}" />
-        <ui:TextBox PlaceholderText="Type something..." Text="{Binding Inner.Password, UpdateSourceTrigger=PropertyChanged}" />
+    <ui:UiPage.Resources>
+        <valueConverters:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <valueConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </ui:UiPage.Resources>
+    
+    <StackPanel Orientation="Vertical"
+                Width="400">
         
-        <ui:Button Appearance="Primary" Content="WPF UI button" Icon="Fluent24" Command="{Binding Inner.LoginCommand}" />
+        <ui:Card IsEnabled="{Binding Core.LoginCommand.IsRunning, Converter={StaticResource BoolNegationConverter}}">
+            <StackPanel Orientation="Vertical">
+                <ui:TextBox PlaceholderText="Username"
+                            Icon="Person20"
+                            IconFilled="True"
+                            Text="{Binding Core.LoginName, UpdateSourceTrigger=PropertyChanged}">
+                    <ui:TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding Core.LoginCommand}" />
+                    </ui:TextBox.InputBindings>
+                </ui:TextBox>
+            
+                <ui:PasswordBox PlaceholderText="Password"
+                                Margin="0, 16, 0, 0"
+                                Icon="Password20"
+                                IconFilled="True"
+                                PasswordChanged="PasswordBox_OnPasswordChanged">
+                    <ui:PasswordBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding Core.LoginCommand}" />
+                    </ui:PasswordBox.InputBindings>
+                </ui:PasswordBox>
+            </StackPanel>
+            
+            <ui:Card.Footer>
+                <ui:Button Appearance="Success" 
+                           Content="Login" 
+                           Icon="ArrowForward20"
+                           IconFilled="True"
+                           Command="{Binding Core.LoginCommand}"
+                           HorizontalAlignment="Right"/>
+            </ui:Card.Footer>
+        </ui:Card>
+        
+        <ProgressBar IsIndeterminate="True"
+                     Margin="0, 16, 0, 0"
+                     Visibility="{Binding Core.LoginCommand.IsRunning, Converter={StaticResource BoolToVisibilityConverter}}" />
+        
     </StackPanel>
 </ui:UiPage>

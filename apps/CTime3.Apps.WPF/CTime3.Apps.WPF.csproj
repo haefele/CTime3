@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="WPF-UI" Version="2.0.3" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="ValueConverters" Version="3.0.26" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,10 +32,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CTime3.Core\CTime3.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

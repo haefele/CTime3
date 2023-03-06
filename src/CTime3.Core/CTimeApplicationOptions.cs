@@ -1,4 +1,4 @@
-﻿namespace CTime3.Core.Services.ApplicationEnvironment;
+﻿namespace CTime3.Core;
 
 public class CTimeApplicationOptions
 {

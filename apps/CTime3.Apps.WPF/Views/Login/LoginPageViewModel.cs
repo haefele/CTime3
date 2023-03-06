@@ -5,10 +5,10 @@ namespace CTime3.Apps.WPF.Views.Login;
 
 public class LoginPageViewModel : ObservableObject
 {
-    public LoginPageViewModel(LoginViewModel innerViewModel)
+    public LoginPageViewModel(LoginViewModel coreViewModel)
     {
-        this.Inner = innerViewModel;
+        this.Core = coreViewModel;
     }
 
-    public LoginViewModel Inner { get; }
+    public LoginViewModel Core { get; }
 }

@@ -1,17 +1,16 @@
-﻿using CTime3.Apps.WPF.Views.Settings;
-using Wpf.Ui.Common.Interfaces;
+﻿using CommunityToolkit.Diagnostics;
 
 namespace CTime3.Apps.WPF.Views.Settings
 {
-    public partial class SettingsPage : INavigableView<SettingsViewModel>
+    public partial class SettingsPage
     {
-        public SettingsViewModel ViewModel { get; }
-
-        public SettingsPage(SettingsViewModel viewModel)
+        public SettingsPage(SettingsPageViewModel pageViewModel)
         {
-            ViewModel = viewModel;
+            Guard.IsNotNull(pageViewModel);
 
-            InitializeComponent();
+            this.DataContext = pageViewModel;
+
+            this.InitializeComponent();
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System.Reflection;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CTime3.Core.Services.ApplicationEnvironment;
+using CTime3.Core;
 using Microsoft.Extensions.Options;
 using Wpf.Ui.Appearance;
 
 namespace CTime3.Apps.WPF.Views.Settings
 {
-    public partial class SettingsViewModel : ObservableObject
+    public partial class SettingsPageViewModel : ObservableObject
     {
         [ObservableProperty]
         private string _appVersion = string.Empty;
@@ -15,8 +16,10 @@ namespace CTime3.Apps.WPF.Views.Settings
         [ObservableProperty]
         private ThemeType _currentTheme = ThemeType.Unknown;
 
-        public SettingsViewModel(IOptions<CTimeApplicationOptions> ctimeApplicationOptions)
+        public SettingsPageViewModel(IOptions<CTimeApplicationOptions> ctimeApplicationOptions)
         {
+            Guard.IsNotNull(ctimeApplicationOptions);
+
             this.CurrentTheme = Theme.GetAppTheme();
             this.AppVersion = $"{ctimeApplicationOptions.Value.AppName} - {GetAssemblyVersion()}";
         }
@@ -29,6 +32,8 @@ namespace CTime3.Apps.WPF.Views.Settings
         [RelayCommand]
         private void OnChangeTheme(string parameter)
         {
+            Guard.IsNotNullOrWhiteSpace(parameter);
+
             var newTheme = parameter switch
             {
                 "theme_light" => ThemeType.Light,

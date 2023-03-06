@@ -8,7 +8,7 @@
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            mc:Ignorable="d"
            
-           d:DataContext="{d:DesignInstance local:SettingsPage, IsDesignTimeCreatable=False}">
+           d:DataContext="{d:DesignInstance local:SettingsPageViewModel, IsDesignTimeCreatable=False}">
     <ui:UiPage.Resources>
         <local:ThemeNameBooleanConverter x:Key="ThemeNameBooleanConverter" />
     </ui:UiPage.Resources>
@@ -21,24 +21,24 @@
         <TextBlock Margin="0,12,0,0" Text="Theme" />
         <RadioButton
             Margin="0,12,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+            Command="{Binding ChangeThemeCommand, Mode=OneWay}"
             CommandParameter="theme_light"
             Content="Light"
             GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
+            IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
         <RadioButton
             Margin="0,8,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
+            Command="{Binding ChangeThemeCommand, Mode=OneWay}"
             CommandParameter="theme_dark"
             Content="Dark"
             GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+            IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
 
         <TextBlock
             Margin="0,24,0,0"
             FontSize="20"
             FontWeight="Medium"
             Text="About" />
-        <TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+        <TextBlock Margin="0,12,0,0" Text="{Binding AppVersion, Mode=OneWay}" />
     </StackPanel>
 </ui:UiPage>
