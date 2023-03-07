@@ -20,6 +20,7 @@ public static class CTimePaths
             CTime3Core.ProjectDirectory,
             CTime3AppAvalonia.ProjectDirectory,
             CTime3AppCommandLine.ProjectDirectory,
+            CTime3AppWPF.ProjectDirectory,
         }.ToList().AsReadOnly();
 
     public static ReadOnlyCollection<string> BinAndObjDirectories => new[]
@@ -46,5 +47,15 @@ public static class CTimePaths
         public static string ProjectDirectory => Path.Combine(SolutionDirectory, "apps", "CTime3.Apps.CommandLine");
         public static string PublishDirectory => Path.Combine(ProjectDirectory, "bin", "Release", TargetFramework, Runtime, "publish");
         public static string ArtifactsFile => Path.Combine(ArtifactsDirectory, "CTime3.Apps.CommandLine.zip");
+    }
+
+    public static class CTime3AppWPF
+    {
+        public static string Runtime => "win-x64";
+        public static string TargetFramework => "net7.0-windows";
+
+        public static string ProjectDirectory => Path.Combine(SolutionDirectory, "apps", "CTime3.Apps.WPF");
+        public static string PublishDirectory => Path.Combine(ProjectDirectory, "bin", "Release", TargetFramework, Runtime, "publish");
+        public static string ArtifactsFile => Path.Combine(ArtifactsDirectory, "CTime3.Apps.WPF.zip");
     }
 }
