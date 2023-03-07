@@ -41,7 +41,7 @@
             </StackPanel>
             
             <ui:Card.Footer>
-                <ui:Button Appearance="Success" 
+                <ui:Button Appearance="Primary" 
                            Content="Login" 
                            Icon="ArrowForward20"
                            IconFilled="True"

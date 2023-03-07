@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using CTime3.Core.Services.Alerts;
 using CTime3.Core.Services.Analytics;
 using CTime3.Core.Services.Clock;
 using CTime3.Core.Services.Configurations;
@@ -7,7 +8,7 @@ using CTime3.Core.Services.CTime.ImageCache;
 using CTime3.Core.Services.CTime.RequestCache;
 using CTime3.Core.Services.Statistics;
 using CTime3.Core.Services.Storage;
-using CTime3.Core.ViewModels;
+using CTime3.Core.ViewModels.Login;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CTime3.Core;
@@ -32,6 +33,7 @@ public static class ServiceCollectionExtensions
         self.AddSingleton<IConfigurationService, ConfigurationService>();
         self.AddSingleton<IStorageService, LiteDBStorageService>();
         self.AddSingleton<IStatisticsService, StatisticsService>();
+        self.AddSingleton<IAlertService, NullAlertService>();
 
         // ViewModels
         self.AddTransient<LoginViewModel>();

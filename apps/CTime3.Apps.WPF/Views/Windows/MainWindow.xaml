@@ -39,7 +39,6 @@
 
         <ui:TitleBar
             Title="{Binding ApplicationTitle, Mode=OneWay}"
-            Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Margin="42,0,0,0"
@@ -69,5 +68,7 @@
                 </ScrollViewer>
             </Border>
         </Grid>
+        
+        <ui:Snackbar Grid.Column="1" x:Name="Snackbar" Timeout="5000" />
     </Grid>
 </ui:UiWindow>

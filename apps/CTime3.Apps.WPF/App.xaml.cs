@@ -5,8 +5,10 @@ using CTime3.Apps.WPF.Views.Login;
 using CTime3.Apps.WPF.Views.Settings;
 using CTime3.Apps.WPF.Views.Windows;
 using CTime3.Core;
+using CTime3.Core.Services.Alerts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
@@ -48,6 +50,9 @@ namespace CTime3.Apps.WPF
                     o.CompanyName = "haefele";
                     o.AppName = "c-Time Fluent";
                 });
+
+                // Replace CTime Services
+                services.Replace(ServiceDescriptor.Singleton<IAlertService, AlertService>());
             }).Build();
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CTime3.Core.ViewModels;
+using CTime3.Core.ViewModels.Login;
 
 namespace CTime3.Apps.WPF.Views.Login;
 

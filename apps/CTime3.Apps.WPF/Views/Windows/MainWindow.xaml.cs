@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using CommunityToolkit.Diagnostics;
+using CTime3.Apps.WPF.Services;
 using CTime3.Apps.WPF.Views.Login;
+using CTime3.Core.Services.Alerts;
 using Wpf.Ui.Mvvm.Contracts;
 
 namespace CTime3.Apps.WPF.Views.Windows
@@ -10,11 +12,12 @@ namespace CTime3.Apps.WPF.Views.Windows
     /// </summary>
     public partial class MainWindow
     {
-        public MainWindow(MainWindowViewModel viewModel, INavigationService navigationService, IPageService pageService)
+        public MainWindow(MainWindowViewModel viewModel, INavigationService navigationService, IPageService pageService, IAlertService alertService)
         {
             Guard.IsNotNull(viewModel);
             Guard.IsNotNull(navigationService);
             Guard.IsNotNull(pageService);
+            Guard.IsNotNull(alertService);
 
             this.DataContext = viewModel;
 
@@ -23,6 +26,8 @@ namespace CTime3.Apps.WPF.Views.Windows
             this.RootNavigation.PageService = pageService;
             navigationService.SetPageService(pageService);
             navigationService.SetNavigationControl(this.RootNavigation);
+
+            ((AlertService)alertService).SetSnackbar(this.Snackbar);
         }
 
         public void Initialize()
