@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿namespace CTime3.Core.Services.CTime.ImageCache;
 
-namespace CTime3.Core.Services.CTime.ImageCache
+public interface IEmployeeImageCache
 {
-    public interface IEmployeeImageCache
-    {
-        string ImageCacheEtag { get; set; }
-        
-        Task FillWithCachedImages(Dictionary<int, AttendingUser> users);
-        Task CacheImagesAsync(Dictionary<int, AttendingUser> users);
-    }
+    string? ImageCacheEtag { get; set; }
+
+    Task FillWithCachedImages(List<AttendingUser> users);
+    Task CacheImagesAsync(List<AttendingUser> users);
 }

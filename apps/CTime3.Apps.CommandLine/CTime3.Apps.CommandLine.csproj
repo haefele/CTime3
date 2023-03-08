@@ -2,16 +2,19 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Packages">
     <PackageReference Include="Spectre.Console" Version="0.46.0" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="References">
     <ProjectReference Include="..\..\src\CTime3.Core\CTime3.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Label="Usings">
+    <Using Include="CommunityToolkit.Diagnostics" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace CTime3.Core.Services.Clock;
 
-namespace CTime3.Core.Services.Clock
+public interface IClock
 {
-    public interface IClock
-    {
-        DateTimeOffset Now();
-        DateTimeOffset NowUtc();
-    }
+    DateTimeOffset Now();
+    DateTimeOffset NowUtc();
 }

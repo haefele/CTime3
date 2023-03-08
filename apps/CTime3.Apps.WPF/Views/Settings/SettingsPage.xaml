@@ -1,0 +1,44 @@
+﻿<ui:UiPage x:Class="CTime3.Apps.WPF.Views.Settings.SettingsPage"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:local="clr-namespace:CTime3.Apps.WPF.Views.Settings"
+           xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+           
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           mc:Ignorable="d"
+           
+           d:DataContext="{d:DesignInstance local:SettingsPageViewModel, IsDesignTimeCreatable=False}">
+    <ui:UiPage.Resources>
+        <local:ThemeNameBooleanConverter x:Key="ThemeNameBooleanConverter" />
+    </ui:UiPage.Resources>
+
+    <StackPanel>
+        <TextBlock
+            FontSize="20"
+            FontWeight="Medium"
+            Text="Personalization" />
+        <TextBlock Margin="0,12,0,0" Text="Theme" />
+        <RadioButton
+            Margin="0,12,0,0"
+            Command="{Binding ChangeThemeCommand, Mode=OneWay}"
+            CommandParameter="theme_light"
+            Content="Light"
+            GroupName="themeSelect"
+            IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
+        <RadioButton
+            Margin="0,8,0,0"
+            Command="{Binding ChangeThemeCommand, Mode=OneWay}"
+            CommandParameter="theme_dark"
+            Content="Dark"
+            GroupName="themeSelect"
+            IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+
+        <TextBlock
+            Margin="0,24,0,0"
+            FontSize="20"
+            FontWeight="Medium"
+            Text="About" />
+        <TextBlock Margin="0,12,0,0" Text="{Binding AppVersion, Mode=OneWay}" />
+    </StackPanel>
+</ui:UiPage>

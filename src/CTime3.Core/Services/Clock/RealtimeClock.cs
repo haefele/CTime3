@@ -1,17 +1,14 @@
-﻿using System;
+﻿namespace CTime3.Core.Services.Clock;
 
-namespace CTime3.Core.Services.Clock
+public class RealtimeClock : IClock
 {
-    public class RealtimeClock : IClock
+    public DateTimeOffset Now()
     {
-        public DateTimeOffset Now()
-        {
-            return DateTimeOffset.Now;
-        }
+        return DateTimeOffset.Now;
+    }
 
-        public DateTimeOffset NowUtc()
-        {
-            return DateTimeOffset.UtcNow;
-        }
+    public DateTimeOffset NowUtc()
+    {
+        return DateTimeOffset.UtcNow;
     }
 }

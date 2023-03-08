@@ -1,0 +1,98 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CTime3.Apps.Avalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CTime3.Apps.Avalonia.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CTime3.Apps.Avalonia"
+        TransparencyLevelHint="AcrylicBlur"
+        >
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <StackPanel Orientation="Vertical">
+        <ui:SettingsExpander IconSource="Globe" Header="Test Header" IsExpanded="True"
+                             Description="This is a description for the SettingsExpander"
+                             ActionIconSource="Save" IsClickEnabled="False">
+            <ui:SettingsExpander.Footer>
+                <Button Content="FooterButton" />
+            </ui:SettingsExpander.Footer>
+
+            <ui:SettingsExpanderItem Content="Content Here" ActionIconSource="Pin" IsClickEnabled="True"  />
+            <ui:SettingsExpanderItem Content="Content Here">
+                <ui:SettingsExpanderItem.Footer>
+                    <Button Content="FooterButton" />
+                </ui:SettingsExpanderItem.Footer>
+            </ui:SettingsExpanderItem>
+        </ui:SettingsExpander>
+        
+        <Button Content="Hey" />
+        
+        <ui:CommandBar>
+            <ui:CommandBar.PrimaryCommands>
+                <ui:CommandBarButton IconSource="Save" Label="Save" Click="Button_OnClick" />
+                <ui:CommandBarButton IconSource="Undo" Label="Undo" />
+                <ui:CommandBarSeparator />
+                <ui:CommandBarToggleButton IconSource="Bold" Label="Bold" />
+                <ui:CommandBarToggleButton IconSource="Italic" Label="Italic" />
+                <ui:CommandBarToggleButton IconSource="Underline" Label="Underline" />
+            </ui:CommandBar.PrimaryCommands>
+            <ui:CommandBar.SecondaryCommands>
+                <ui:CommandBarButton IconSource="Cut" Label="Cut" />
+                <ui:CommandBarButton IconSource="Copy" Label="Copy" />
+                <ui:CommandBarButton IconSource="Paste" Label="Paste" />
+            </ui:CommandBar.SecondaryCommands>
+        </ui:CommandBar>
+        
+        
+        <ui:NavigationView x:Name="nvSample" Height="460" PaneDisplayMode="Left" IsBackButtonVisible="True">
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="Home" Tag="SamplePage1" IconSource="Home" />
+                <ui:NavigationViewItem Content="Account" Tag="SamplePage2" IconSource="Home">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem Content="Mail" IconSource="Mail" Tag="SamplePage3" />
+                        <ui:NavigationViewItem Content="Calendar" IconSource="Calendar" Tag="SamplePage4" />
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="Document options" Tag="SamplePage3" IconSource="Document" SelectsOnInvoked="False">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem Content="Create new" IconSource="New" Tag="SamplePage5" />
+                        <ui:NavigationViewItem Content="Upload file" IconSource="Upload" Tag="SamplePage6" />
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.AutoCompleteBox>
+                <AutoCompleteBox />
+            </ui:NavigationView.AutoCompleteBox>
+
+            <ui:NavigationView.PaneCustomContent>
+                <TextBlock Name="PaneHyperlink" TextDecorations="Underline" Text="More Info" IsVisible="true" />
+            </ui:NavigationView.PaneCustomContent>
+
+            <ui:NavigationView.PaneFooter>
+                <StackPanel Name="FooterStackPanel" Orientation="Vertical" IsVisible="true">
+                    <ui:NavigationViewItem IconSource="Download" />
+                    <ui:NavigationViewItem IconSource="Alert" />
+                </StackPanel>
+            </ui:NavigationView.PaneFooter>
+            
+            <ui:NavigationView.Content>
+                <Button Content="Test" />
+            </ui:NavigationView.Content>
+        </ui:NavigationView>
+
+        
+        <ui:TaskDialog x:Name="TaskDialog" Header="Test"></ui:TaskDialog>
+        
+    </StackPanel>
+
+
+</Window>

@@ -133,13 +133,13 @@
     <value />
   </data>
   <data name="Entered" xml:space="preserve">
-    <value />
+    <value>Present</value>
   </data>
   <data name="HomeOffice" xml:space="preserve">
     <value />
   </data>
   <data name="Left" xml:space="preserve">
-    <value />
+    <value>Away</value>
   </data>
   <data name="ShortBreak" xml:space="preserve">
     <value />
