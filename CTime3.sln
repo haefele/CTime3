@@ -27,6 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTime3.Scripts", "deploymen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTime3.Apps.WPF", "apps\CTime3.Apps.WPF\CTime3.Apps.WPF.csproj", "{841E7526-4E7A-4876-A9BF-D02B750AF0F7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{9872F76D-2B00-4583-9389-8213CE36AF7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C5CDBEAF-7EAA-4E77-B013-A17831AC7305}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +70,7 @@ Global
 		{D29D1736-87A8-41D0-9F04-260D59303756} = {B2184B07-BCF2-4B95-AC19-3F0108596757}
 		{FB5DB124-6D83-48FF-8B69-4DD880FC35A8} = {8691FAF2-4F9F-47A4-9B5F-400EE573B6F8}
 		{841E7526-4E7A-4876-A9BF-D02B750AF0F7} = {B2184B07-BCF2-4B95-AC19-3F0108596757}
+		{C5CDBEAF-7EAA-4E77-B013-A17831AC7305} = {9872F76D-2B00-4583-9389-8213CE36AF7E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C0BF017-F422-478D-932A-B0533C5C2922}

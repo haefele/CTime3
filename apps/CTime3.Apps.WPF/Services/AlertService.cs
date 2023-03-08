@@ -31,8 +31,9 @@ public class AlertService : IAlertService
             _ => ControlAppearance.Caution,
         };
 
-        // ReSharper disable once MethodHasAsyncOverload, we don't want to wait until the snackbar is closed
+#pragma warning disable CA1849 // We don't want to wait until the snackbar is closed again
         this._snackbar.Show(title, message, symbol, appearance);
+#pragma warning restore CA1849
 
         await Task.CompletedTask;
     }

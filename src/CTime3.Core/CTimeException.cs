@@ -2,6 +2,9 @@
 
 public class CTimeException : Exception
 {
+    public CTimeException()
+    {
+    }
     public CTimeException(string message)
         : base(message)
     {

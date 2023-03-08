@@ -35,11 +35,11 @@ public sealed class TypeRegistrar : ITypeRegistrar
         this._builder.AddSingleton(service, implementation);
     }
 
-    public void RegisterLazy(Type service, Func<object> func)
+    public void RegisterLazy(Type service, Func<object> factory)
     {
         Guard.IsNotNull(service);
-        Guard.IsNotNull(func);
+        Guard.IsNotNull(factory);
 
-        this._builder.AddSingleton(service, (_) => func());
+        this._builder.AddSingleton(service, (_) => factory());
     }
 }

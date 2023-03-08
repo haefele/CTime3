@@ -45,7 +45,9 @@ public class LoginCommand : AsyncCommand
                 user = await this._cTimeService.Login(username, password);
             });
 
+#pragma warning disable CA1508 // It is set above in the Status().StartAsync(...) call
         if (user is null)
+#pragma warning restore CA1508
         {
             this._ansiConsole.MarkupLine("[red]Login failed![/] Please make sure you entered your [bold]username[/] and [bold]password[/] correctly.");
             return ExitCodes.Failed;

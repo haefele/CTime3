@@ -29,6 +29,8 @@ public class ConfigurationService : IConfigurationService
 
     public async Task Modify(Func<Configuration, Configuration> changeAction)
     {
+        Guard.IsNotNull(changeAction);
+
         var newConfig = changeAction(this.Config);
 
         await this._storageService.StoreAsync(CollectionName, UniqueId, newConfig);

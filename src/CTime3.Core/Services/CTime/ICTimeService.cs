@@ -15,6 +15,8 @@ public static class CTimeServiceExtensions
     {
         try
         {
+            Guard.IsNotNull(self);
+
             await self.Login(string.Empty, string.Empty);
             return true;
         }
@@ -26,11 +28,17 @@ public static class CTimeServiceExtensions
 
     public static async Task SaveTimer(this ICTimeService self, User user, DateTime time, TimeState state)
     {
+        Guard.IsNotNull(self);
+        Guard.IsNotNull(user);
+
         await self.SaveTimer(user.Id, string.Empty, time, user.CompanyId, state);
     }
 
     public static async Task<bool> IsCurrentlyCheckedIn(this ICTimeService self, string employeeGuid)
     {
+        Guard.IsNotNull(self);
+        Guard.IsNotNullOrWhiteSpace(employeeGuid);
+
         var currentTime = await self.GetCurrentTime(employeeGuid);
         return currentTime is not null && currentTime.State.IsEntered();
     }
