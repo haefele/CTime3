@@ -1,4 +1,5 @@
-﻿using CTime3.Core.Services.Configurations;
+﻿using System.Globalization;
+using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -98,8 +99,8 @@ public class ListCommand : AsyncCommand
 
                 foreach (var time in perDay.Times)
                 {
-                    var from = time.ClockInTime?.ToString("t") ?? "?";
-                    var to = time.ClockOutTime?.ToString("t") ?? "?";
+                    var from = time.ClockInTime?.ToString("t", CultureInfo.CurrentCulture) ?? "?";
+                    var to = time.ClockOutTime?.ToString("t", CultureInfo.CurrentCulture) ?? "?";
                     var duration = time.ClockInTime is not null && time.ClockOutTime is not null
                         ? time.ClockOutTime.Value - time.ClockInTime.Value
                         : (TimeSpan?)null;

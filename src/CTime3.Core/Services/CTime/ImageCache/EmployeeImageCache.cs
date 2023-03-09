@@ -21,6 +21,8 @@ public class EmployeeImageCache : IEmployeeImageCache
 
     public async Task FillWithCachedImages(List<AttendingUser> users)
     {
+        Guard.IsNotNull(users);
+
         foreach (var user in users)
         {
             var cachedImage = await this._storageService.GetAsync<byte[]>("image_cache", user.Id);
@@ -32,6 +34,8 @@ public class EmployeeImageCache : IEmployeeImageCache
 
     public async Task CacheImagesAsync(List<AttendingUser> users)
     {
+        Guard.IsNotNull(users);
+
         foreach (var user in users)
         {
             await this._storageService.StoreAsync("image_cache", user.Id, user.ImageAsPng);

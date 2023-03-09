@@ -6,9 +6,9 @@ namespace CTime3.Apps.Avalonia;
 
 public class ViewLocator : IDataTemplate
 {
-    public Control? Build(object? data)
+    public Control? Build(object? param)
     {
-        var name = data?.GetType().FullName!.Replace("ViewModel", "View");
+        var name = param?.GetType().FullName!.Replace("ViewModel", "View", StringComparison.InvariantCulture);
         var type = name is not null ? Type.GetType(name) : null;
 
         if (type is not null)

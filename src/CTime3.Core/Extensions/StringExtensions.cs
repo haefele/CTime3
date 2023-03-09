@@ -1,4 +1,6 @@
-﻿namespace CTime3.Core.Extensions;
+﻿using System.Globalization;
+
+namespace CTime3.Core.Extensions;
 
 public static class StringExtensions
 {
@@ -7,9 +9,9 @@ public static class StringExtensions
         if (string.IsNullOrWhiteSpace(self))
             return self;
 
-        string firstCharacter = self.Substring(0, 1);
-        string rest = self.Substring(1);
+        var firstCharacter = self.Substring(0, 1);
+        var rest = self.Substring(1);
 
-        return firstCharacter.ToUpper() + rest;
+        return firstCharacter.ToUpper(CultureInfo.CurrentUICulture) + rest;
     }
 }

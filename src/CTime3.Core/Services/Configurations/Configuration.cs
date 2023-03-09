@@ -30,6 +30,8 @@ public record CurrentUser(
 {
     public static CurrentUser FromUser(User user)
     {
+        Guard.IsNotNull(user);
+
         return new(user.Id, user.CompanyId, user.CompanyName, user.FirstName, user.Name, user.LoginName);
     }
 }

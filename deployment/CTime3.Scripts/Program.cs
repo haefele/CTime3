@@ -31,7 +31,7 @@ Target("build-cli", DependsOn("clean"), () =>
         .ExecuteBufferedAsync().GetAwaiter().GetResult();
 
     if (buildResult.ExitCode is not 0)
-        throw new Exception($"Failed to build CTime3.Apps.CommandLine. Exit code: {buildResult.ExitCode}, Output: {buildResult.StandardOutput}, Error: {buildResult.StandardError}");
+        throw new IOException($"Failed to build CTime3.Apps.CommandLine. Exit code: {buildResult.ExitCode}, Output: {buildResult.StandardOutput}, Error: {buildResult.StandardError}");
 
     Console.WriteLine("Built CTime3.Apps.CommandLine");
 
@@ -57,7 +57,7 @@ Target("build-wpf", DependsOn("clean"), () =>
         .ExecuteBufferedAsync().GetAwaiter().GetResult();
 
     if (buildResult.ExitCode is not 0)
-        throw new Exception($"Failed to build CTime3.Apps.WPF. Exit code: {buildResult.ExitCode}, Output: {buildResult.StandardOutput}, Error: {buildResult.StandardError}");
+        throw new IOException($"Failed to build CTime3.Apps.WPF. Exit code: {buildResult.ExitCode}, Output: {buildResult.StandardOutput}, Error: {buildResult.StandardError}");
 
     Console.WriteLine("Built CTime3.Apps.WPF");
 

@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CTime3.Scripts;
 
+[SuppressMessage("Design", "CA1034: Nested types should not be visible", Justification = "Intended in this file.")]
 public static class CTimePaths
 {
     public static string SolutionDirectory

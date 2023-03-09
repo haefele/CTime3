@@ -96,9 +96,9 @@ public class CTimeService : ICTimeService, IDisposable
             var responseJson = await this.SendRequestAsync("GetTimerListV2.php", new Dictionary<string, string>
             {
                 {"EmployeeGUID", employeeGuid},
-                {"DateTill", end.ToString("yyyy-MM-dd")},
-                {"DateFrom", start.ToString("yyyy-MM-dd")},
-                {"Summary", 1.ToString()},
+                {"DateTill", end.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                {"DateFrom", start.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                {"Summary", 1.ToString(CultureInfo.InvariantCulture)},
                 {"APPGUID", this._ctimeApplicationOptions.CurrentValue.CTimeApiAppGuid },
             });
 
@@ -154,9 +154,9 @@ public class CTimeService : ICTimeService, IDisposable
         {
             var data = new Dictionary<string, string>
             {
-                {"TimerKind", ((int) state).ToString()},
+                {"TimerKind", ((int) state).ToString(CultureInfo.InvariantCulture)},
                 {"TimerText", string.Empty},
-                {"TimerTime", time.ToString("yyyy-MM-dd HH:mm:ss")},
+                {"TimerTime", time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
                 {"EmployeeGUID", employeeGuid},
                 {"GUID", companyId},
                 {"RFID", rfidKey ?? string.Empty},
@@ -336,18 +336,22 @@ public class CTimeService : ICTimeService, IDisposable
 
         return Color.FromArgb(
             255,
-            byte.Parse(r, NumberStyles.HexNumber),
-            byte.Parse(g, NumberStyles.HexNumber),
-            byte.Parse(b, NumberStyles.HexNumber));
+            byte.Parse(r, NumberStyles.HexNumber, CultureInfo.InvariantCulture),
+            byte.Parse(g, NumberStyles.HexNumber, CultureInfo.InvariantCulture),
+            byte.Parse(b, NumberStyles.HexNumber, CultureInfo.InvariantCulture));
     }
 
     private string GetHashedPassword(string password)
     {
         var passwordBytes = Encoding.UTF8.GetBytes(password);
+#pragma warning disable CA5351 // Has to be MD5 because of the c-Time API
         var hashedPasswordBytes = MD5.HashData(passwordBytes);
+#pragma warning restore CA5351
         var hashedPasswordString = BitConverter.ToString(hashedPasswordBytes);
 
-        return hashedPasswordString.Replace("-", string.Empty).ToLower();
+#pragma warning disable CA1308 // Has to be lower case because of the c-Time API
+        return hashedPasswordString.Replace("-", string.Empty, StringComparison.Ordinal).ToLower(CultureInfo.InvariantCulture);
+#pragma warning restore CA1308
     }
 
     private async Task<JObject?> SendRequestAsync(string function, Dictionary<string, string> data, bool canBeCached = true)
@@ -400,6 +404,6 @@ public class CTimeService : ICTimeService, IDisposable
         if (string.IsNullOrWhiteSpace(value))
             return null;
 
-        return string.Format(this._ctimeApplicationOptions.CurrentValue.CTimeImageUrlFormat, value);
+        return string.Format(CultureInfo.InvariantCulture, this._ctimeApplicationOptions.CurrentValue.CTimeImageUrlFormat, value);
     }
 }

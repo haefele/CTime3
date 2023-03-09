@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Globalization;
+using Newtonsoft.Json.Linq;
 
 namespace CTime3.Core.Extensions;
 
@@ -6,6 +7,8 @@ public static class JsonExtensions
 {
     public static TimeSpan ValueAsTimeSpan(this JObject self, string name)
     {
+        Guard.IsNotNull(self);
+
         var time = self.Value<string>(name);
 
         if (string.IsNullOrWhiteSpace(time))
@@ -13,19 +16,9 @@ public static class JsonExtensions
 
         var parts = time.Split(':');
 
-        var hours = int.Parse(parts[0]);
-        var minutes = int.Parse(parts[1]);
+        var hours = int.Parse(parts[0], CultureInfo.InvariantCulture);
+        var minutes = int.Parse(parts[1], CultureInfo.InvariantCulture);
 
         return new TimeSpan(hours, minutes, 0);
-    }
-
-    public static byte[] ValueAsBase64Array(this JObject self, string name)
-    {
-        var base64 = self.Value<string>(name);
-
-        if (string.IsNullOrWhiteSpace(base64))
-            return Array.Empty<byte>();
-
-        return Convert.FromBase64String(base64);
     }
 }
