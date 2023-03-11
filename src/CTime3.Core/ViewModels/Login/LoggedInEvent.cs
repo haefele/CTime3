@@ -3,3 +3,7 @@
 public class LoggedInEvent
 {
 }
+
+public class LoggedOutEvent
+{
+}
