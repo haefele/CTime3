@@ -2,17 +2,20 @@
 using CommunityToolkit.Diagnostics;
 using CTime3.Apps.WPF.Services;
 using CTime3.Apps.WPF.Views.Login;
+using CTime3.Apps.WPF.Views.Shell;
 using CTime3.Core.Services.Alerts;
 using Wpf.Ui.Contracts;
 
-namespace CTime3.Apps.WPF.Views.Windows
+namespace CTime3.Apps.WPF.Views.Shell
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class ShellWindow
     {
-        public MainWindow(MainWindowViewModel viewModel, INavigationService navigationService, IPageService pageService, IAlertService alertService)
+        public ShellWindowViewModel ViewModel => (ShellWindowViewModel)this.DataContext;
+
+        public ShellWindow(ShellWindowViewModel viewModel, INavigationService navigationService, IPageService pageService, IAlertService alertService)
         {
             Guard.IsNotNull(viewModel);
             Guard.IsNotNull(navigationService);
@@ -27,11 +30,6 @@ namespace CTime3.Apps.WPF.Views.Windows
             navigationService.SetNavigationControl(this.RootNavigation);
 
             ((AlertService)alertService).SetSnackbar(this.Snackbar);
-        }
-
-        public void Initialize()
-        {
-            this.RootNavigation.Navigate(typeof(LoginPage));
         }
 
         protected override void OnClosed(EventArgs e)
