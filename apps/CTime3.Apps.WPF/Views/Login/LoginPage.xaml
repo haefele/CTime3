@@ -1,4 +1,4 @@
-<ui:UiPage x:Class="CTime3.Apps.WPF.Views.Login.LoginPage"
+<Page x:Class="CTime3.Apps.WPF.Views.Login.LoginPage"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:local="clr-namespace:CTime3.Apps.WPF.Views.Login"
@@ -10,10 +10,10 @@
            mc:Ignorable="d"
            
            d:DataContext="{d:DesignInstance local:LoginPageViewModel, IsDesignTimeCreatable=False}">
-    <ui:UiPage.Resources>
+    <Page.Resources>
         <valueConverters:BoolNegationConverter x:Key="BoolNegationConverter" />
         <valueConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    </ui:UiPage.Resources>
+    </Page.Resources>
     
     <StackPanel Orientation="Vertical"
                 Width="400">
@@ -55,4 +55,4 @@
                      Visibility="{Binding Core.LoginCommand.IsRunning, Converter={StaticResource BoolToVisibilityConverter}}" />
         
     </StackPanel>
-</ui:UiPage>
+</Page>

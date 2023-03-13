@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using CommunityToolkit.Diagnostics;
-using Wpf.Ui.Mvvm.Contracts;
+using Wpf.Ui.Contracts;
 
 namespace CTime3.Apps.WPF.Services
 {

@@ -2,11 +2,12 @@
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CTime3.Apps.WPF.Views.Login;
+using CTime3.Apps.WPF.Views.Settings;
 using CTime3.Core;
 using Microsoft.Extensions.Options;
 using Wpf.Ui.Common;
 using Wpf.Ui.Controls;
-using Wpf.Ui.Controls.Interfaces;
+using Wpf.Ui.Controls.Navigation;
 
 namespace CTime3.Apps.WPF.Views.Windows
 {
@@ -16,7 +17,10 @@ namespace CTime3.Apps.WPF.Views.Windows
         private string _applicationTitle = string.Empty;
 
         [ObservableProperty]
-        private ObservableCollection<INavigationControl> _navigationItems = new();
+        private ObservableCollection<INavigationViewItem> _navigationItems = new();
+
+        [ObservableProperty]
+        private ObservableCollection<INavigationViewItem> _footerNavigationItems = new();
 
         public MainWindowViewModel(IOptions<CTimeApplicationOptions> ctimeApplicationOptions)
         {
@@ -24,15 +28,19 @@ namespace CTime3.Apps.WPF.Views.Windows
 
             this.ApplicationTitle = ctimeApplicationOptions.Value.AppName;
 
-            this.NavigationItems = new ObservableCollection<INavigationControl>
+            this.NavigationItems.Add(new NavigationViewItem
             {
-                new NavigationItem()
-                {
-                    Content = "Login",
-                    Icon = SymbolRegular.Home24,
-                    PageType = typeof(LoginPage),
-                },
-            };
+                Content = "Login",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
+                TargetPageType = typeof(LoginPage),
+            });
+
+            this.FooterNavigationItems.Add(new NavigationViewItem
+            {
+                Content = "Settings",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
+                TargetPageType = typeof(SettingsPage),
+            });
         }
     }
 }

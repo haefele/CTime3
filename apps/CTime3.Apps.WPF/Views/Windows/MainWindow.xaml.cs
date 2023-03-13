@@ -3,7 +3,7 @@ using CommunityToolkit.Diagnostics;
 using CTime3.Apps.WPF.Services;
 using CTime3.Apps.WPF.Views.Login;
 using CTime3.Core.Services.Alerts;
-using Wpf.Ui.Mvvm.Contracts;
+using Wpf.Ui.Contracts;
 
 namespace CTime3.Apps.WPF.Views.Windows
 {
@@ -23,7 +23,6 @@ namespace CTime3.Apps.WPF.Views.Windows
 
             this.InitializeComponent();
 
-            this.RootNavigation.PageService = pageService;
             navigationService.SetPageService(pageService);
             navigationService.SetNavigationControl(this.RootNavigation);
 

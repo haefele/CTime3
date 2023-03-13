@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using CommunityToolkit.Diagnostics;
-using Wpf.Ui.Common.Interfaces;
 
 namespace CTime3.Apps.WPF.Views.Login;
 
@@ -20,6 +19,7 @@ public partial class LoginPage
 
     private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
     {
+        // WORKAROUND: For some reason the password binding doesn't work
         this.ViewModel.Core.Password = ((Wpf.Ui.Controls.PasswordBox)sender).Password;
     }
 }
