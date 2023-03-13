@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="WPF-UI" Version="2.0.3" />
+    <PackageReference Include="WPF-UI" Version="3.0.0-preview.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="ValueConverters" Version="3.0.26" />
   </ItemGroup>

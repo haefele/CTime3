@@ -2,7 +2,6 @@
 using CTime3.Apps.WPF.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Wpf.Ui.Mvvm.Contracts;
 
 namespace CTime3.Apps.WPF
 {
