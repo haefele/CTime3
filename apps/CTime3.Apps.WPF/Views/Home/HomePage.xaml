@@ -12,7 +12,5 @@
       d:DesignHeight="300">
     <Grid>
         <TextBlock Text="Heyho!" />
-        
-        <ui:Button Content="Logout" Click="ButtonBase_OnClick"></ui:Button>
     </Grid>
 </Page>

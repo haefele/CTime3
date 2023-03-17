@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using CommunityToolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CTime3.Core;
+using CTime3.Core.ViewModels.Settings;
 using Microsoft.Extensions.Options;
 using Wpf.Ui.Appearance;
 
@@ -11,22 +11,19 @@ namespace CTime3.Apps.WPF.Views.Settings
     public partial class SettingsPageViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string _appVersion = string.Empty;
-
-        [ObservableProperty]
         private ThemeType _currentTheme = ThemeType.Unknown;
 
-        public SettingsPageViewModel(IOptions<CTimeApplicationOptions> ctimeApplicationOptions)
+        [ObservableProperty]
+        private SettingsViewModel _core;
+
+        public SettingsPageViewModel(IOptions<CTimeApplicationOptions> ctimeApplicationOptions, SettingsViewModel coreViewModel)
         {
             Guard.IsNotNull(ctimeApplicationOptions);
+            Guard.IsNotNull(coreViewModel);
+
+            this._core = coreViewModel;
 
             this.CurrentTheme = Theme.GetAppTheme();
-            this.AppVersion = $"{ctimeApplicationOptions.Value.AppName} - {GetAssemblyVersion()}";
-        }
-
-        private static string GetAssemblyVersion()
-        {
-            return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? string.Empty;
         }
 
         [RelayCommand]

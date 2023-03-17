@@ -13,34 +13,74 @@
       d:DataContext="{d:DesignInstance local:SettingsPageViewModel, IsDesignTimeCreatable=False}">
     <Page.Resources>
         <local:ThemeNameBooleanConverter x:Key="ThemeNameBooleanConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Page.Resources>
 
-    <StackPanel Margin="42, 10, 0, 0">
+    <StackPanel Margin="42, 10 42, 0">
+        <TextBlock FontSize="20"
+                   Margin="0, 0, 0, 6"
+                   FontWeight="Medium"
+                   Text="Theme" />
+        <ui:Card>
+            <StackPanel>
+                <RadioButton
+                    Command="{Binding ChangeThemeCommand, Mode=OneWay}"
+                    CommandParameter="theme_light"
+                    Content="Light"
+                    GroupName="themeSelect"
+                    IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
+                <RadioButton
+                    Command="{Binding ChangeThemeCommand, Mode=OneWay}"
+                    CommandParameter="theme_dark"
+                    Content="Dark"
+                    GroupName="themeSelect"
+                    IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+            </StackPanel>
+        </ui:Card>
+        
         <TextBlock
-            FontSize="20"
-            FontWeight="Medium"
-            Text="Personalization" />
-        <TextBlock Margin="0,12,0,0" Text="Theme" />
-        <RadioButton
-            Margin="0,12,0,0"
-            Command="{Binding ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_light"
-            Content="Light"
-            GroupName="themeSelect"
-            IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
-        <RadioButton
-            Margin="0,8,0,0"
-            Command="{Binding ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_dark"
-            Content="Dark"
-            GroupName="themeSelect"
-            IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeNameBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
-
-        <TextBlock
-            Margin="0,24,0,0"
+            Margin="0,24,0,6"
             FontSize="20"
             FontWeight="Medium"
             Text="About" />
-        <TextBlock Margin="0,12,0,0" Text="{Binding AppVersion, Mode=OneWay}" />
+        <ui:Card>
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24" />
+                    <RowDefinition Height="24" />
+                    <RowDefinition Height="24" />
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" Text="App name" />
+                <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Core.AppName}" />
+                
+                <TextBlock Grid.Column="0" Grid.Row="1" FontWeight="Bold" Text="Author" />
+                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Core.CompanyName}" />
+                
+                <TextBlock Grid.Column="0" Grid.Row="2" FontWeight="Bold" Text="Version" />
+                <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding Core.VersionNumber}" />
+            </Grid>
+        </ui:Card>
+        
+        <StackPanel Visibility="{Binding Core.IsLoggedIn, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock
+                Margin="0,24,0,6"
+                FontSize="20"
+                FontWeight="Medium"
+                Text="Account" />
+            <ui:Button Content="Logout"
+                       Appearance="Danger"
+                       Command="{Binding Core.LogoutCommand}"/>
+        </StackPanel>
     </StackPanel>
 </Page>

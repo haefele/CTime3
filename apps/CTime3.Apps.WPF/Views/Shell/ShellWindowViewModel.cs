@@ -9,6 +9,7 @@ using CTime3.Apps.WPF.Views.Settings;
 using CTime3.Core;
 using CTime3.Core.Services.Configurations;
 using CTime3.Core.ViewModels.Login;
+using CTime3.Core.ViewModels.Settings;
 using Microsoft.Extensions.Options;
 using Wpf.Ui.Common;
 using Wpf.Ui.Contracts;
