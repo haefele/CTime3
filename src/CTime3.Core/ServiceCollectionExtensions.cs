@@ -9,6 +9,7 @@ using CTime3.Core.Services.CTime.RequestCache;
 using CTime3.Core.Services.Statistics;
 using CTime3.Core.Services.Storage;
 using CTime3.Core.ViewModels.Login;
+using CTime3.Core.ViewModels.Settings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CTime3.Core;
@@ -37,6 +38,7 @@ public static class ServiceCollectionExtensions
 
         // ViewModels
         self.AddTransient<LoginViewModel>();
+        self.AddTransient<SettingsViewModel>();
 
         // Options
         self.AddOptions<CTimeApplicationOptions>()
