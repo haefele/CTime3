@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using CTime3.Apps.CommandLine.Infrastructure;
 using CTime3.Core.Services.Configurations;
 using CTime3.Core.Services.CTime;
 using Spectre.Console;
@@ -7,31 +8,23 @@ using Color = Spectre.Console.Color;
 
 namespace CTime3.Apps.CommandLine.Commands;
 
-public class ListCommand : AsyncCommand
+public class ListCommand : AuthorizedCommand
 {
     private readonly ICTimeService _cTimeService;
-    private readonly IConfigurationService _configurationService;
     private readonly IAnsiConsole _ansiConsole;
 
     public ListCommand(ICTimeService cTimeService, IConfigurationService configurationService, IAnsiConsole ansiConsole)
+        : base(configurationService, ansiConsole)
     {
         Guard.IsNotNull(cTimeService);
-        Guard.IsNotNull(configurationService);
         Guard.IsNotNull(ansiConsole);
 
         this._cTimeService = cTimeService;
-        this._configurationService = configurationService;
         this._ansiConsole = ansiConsole;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context)
+    protected override async Task<int> ExecuteAuthorizedAsync(CurrentUser user, CommandContext context)
     {
-        if (this._configurationService.Config.CurrentUser is null)
-        {
-            this._ansiConsole.MarkupLine("You are not [red]logged in![/] You have to login before using this command.");
-            return ExitCodes.Failed;
-        }
-
         foreach (var (start, end) in this.GetTimes())
         {
             var times = new List<Time>();
@@ -39,7 +32,7 @@ public class ListCommand : AsyncCommand
                 .Status()
                 .StartAsync("Loading times", async _ =>
                 {
-                    times = await this._cTimeService.GetTimes(this._configurationService.Config.CurrentUser.Id, start, end);
+                    times = await this._cTimeService.GetTimes(user.Id, start, end);
                 });
 
             this.RenderTimes(times);

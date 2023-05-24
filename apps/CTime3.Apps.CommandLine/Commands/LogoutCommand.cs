@@ -1,15 +1,17 @@
-﻿using CTime3.Core.Services.Configurations;
+﻿using CTime3.Apps.CommandLine.Infrastructure;
+using CTime3.Core.Services.Configurations;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace CTime3.Apps.CommandLine.Commands;
 
-public class LogoutCommand : AsyncCommand
+public class LogoutCommand : AuthorizedCommand
 {
     private readonly IConfigurationService _configurationService;
     private readonly IAnsiConsole _ansiConsole;
 
     public LogoutCommand(IConfigurationService configurationService, IAnsiConsole ansiConsole)
+        : base(configurationService, ansiConsole)
     {
         Guard.IsNotNull(configurationService);
         Guard.IsNotNull(ansiConsole);
@@ -18,17 +20,9 @@ public class LogoutCommand : AsyncCommand
         this._ansiConsole = ansiConsole;
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context)
+    protected override async Task<int> ExecuteAuthorizedAsync(CurrentUser user, CommandContext context)
     {
-        var currentUser = this._configurationService.Config.CurrentUser;
-
-        if (currentUser is null)
-        {
-            this._ansiConsole.MarkupLine("You are [bold]currently not logged in[/].");
-            return ExitCodes.Ok;
-        }
-
-        var logout = this._ansiConsole.Prompt(new ConfirmationPrompt($"You are currently logged in as [bold]{currentUser.FirstName} {currentUser.Name}[/]. Do you really want to logout?") { DefaultValue = false });
+        var logout = this._ansiConsole.Prompt(new ConfirmationPrompt($"You are currently logged in as [bold]{user.FirstName} {user.Name}[/]. Do you really want to logout?") { DefaultValue = false });
         if (logout == false)
             return ExitCodes.Cancelled;
 
