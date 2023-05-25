@@ -43,24 +43,6 @@ public static class ServiceCollectionExtensions
         // Options
         self.AddOptions<CTimeApplicationOptions>()
             .Configure(configure)
-            .Validate(o =>
-                {
-                    if (string.IsNullOrWhiteSpace(o.CompanyName))
-                        return false;
-
-                    if (string.IsNullOrWhiteSpace(o.AppName))
-                        return false;
-
-                    if (string.IsNullOrWhiteSpace(o.CTimeApiAppGuid))
-                        return false;
-
-                    if (string.IsNullOrWhiteSpace(o.CTimeApiBaseUrl))
-                        return false;
-
-                    if (string.IsNullOrWhiteSpace(o.CTimeImageUrlFormat))
-                        return false;
-
-                    return true;
-                });
+            .Validate(o => o.IsValid());
     }
 }
