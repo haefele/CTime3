@@ -118,33 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CTimeService.ErrorWhileLoadingAttendanceList" xml:space="preserve">
-    <value />
+    <value>Error while loading user list</value>
   </data>
   <data name="CTimeService.ErrorWhileLoadingCurrentTime" xml:space="preserve">
-    <value />
+    <value>Error while loading current time</value>
   </data>
   <data name="CTimeService.ErrorWhileLoadingTimes" xml:space="preserve">
-    <value />
+    <value>Error while loading times</value>
   </data>
   <data name="CTimeService.ErrorWhileLogin" xml:space="preserve">
-    <value>Test</value>
+    <value>Error while login</value>
   </data>
   <data name="CTimeService.ErrorWhileStamp" xml:space="preserve">
-    <value />
+    <value>Error while stamp</value>
   </data>
   <data name="Entered" xml:space="preserve">
     <value>Present</value>
   </data>
   <data name="HomeOffice" xml:space="preserve">
-    <value />
+    <value>HomeOffice</value>
   </data>
   <data name="Left" xml:space="preserve">
     <value>Away</value>
   </data>
   <data name="ShortBreak" xml:space="preserve">
-    <value />
+    <value>ShortBreak</value>
   </data>
   <data name="Trip" xml:space="preserve">
-    <value />
+    <value>Trip</value>
   </data>
 </root>

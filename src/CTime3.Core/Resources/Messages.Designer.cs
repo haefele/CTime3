@@ -60,7 +60,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Error while loading user list.
         /// </summary>
         internal static string CTimeService_ErrorWhileLoadingAttendanceList {
             get {
@@ -69,7 +69,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Error while loading current time.
         /// </summary>
         internal static string CTimeService_ErrorWhileLoadingCurrentTime {
             get {
@@ -78,7 +78,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Error while loading times.
         /// </summary>
         internal static string CTimeService_ErrorWhileLoadingTimes {
             get {
@@ -87,7 +87,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test.
+        ///   Looks up a localized string similar to Error while login.
         /// </summary>
         internal static string CTimeService_ErrorWhileLogin {
             get {
@@ -96,7 +96,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Error while stamp.
         /// </summary>
         internal static string CTimeService_ErrorWhileStamp {
             get {
@@ -114,7 +114,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to HomeOffice.
         /// </summary>
         internal static string HomeOffice {
             get {
@@ -132,7 +132,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to ShortBreak.
         /// </summary>
         internal static string ShortBreak {
             get {
@@ -141,7 +141,7 @@ namespace CTime3.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Trip.
         /// </summary>
         internal static string Trip {
             get {
