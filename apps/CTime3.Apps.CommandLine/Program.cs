@@ -36,6 +36,9 @@ class Program
 
             f.AddCommand<StartCommand>("start")
                 .WithDescription("Starts a new timer.");
+
+            f.AddCommand<StopCommand>("stop")
+                .WithDescription("Stops the current timer.");
         });
 
         return await app.RunAsync(args);
