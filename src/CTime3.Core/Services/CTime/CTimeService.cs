@@ -374,8 +374,7 @@ public class CTimeService : ICTimeService, IDisposable
 
             }, CancellationToken.None, continueOnCapturedContext: true);
 
-            if (response.StatusCode != HttpStatusCode.OK)
-                return null;
+            response.EnsureSuccessStatusCode();
 
             responseContentAsString = await response.Content.ReadAsStringAsync();
 
