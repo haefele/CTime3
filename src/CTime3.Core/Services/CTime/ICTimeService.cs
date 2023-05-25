@@ -1,4 +1,6 @@
-﻿namespace CTime3.Core.Services.CTime;
+﻿using CTime3.Core.Services.Configurations;
+
+namespace CTime3.Core.Services.CTime;
 
 public interface ICTimeService
 {
@@ -26,7 +28,7 @@ public static class CTimeServiceExtensions
         }
     }
 
-    public static async Task SaveTimer(this ICTimeService self, User user, DateTime time, TimeState state)
+    public static async Task SaveTimer(this ICTimeService self, CurrentUser user, DateTime time, TimeState state)
     {
         Guard.IsNotNull(self);
         Guard.IsNotNull(user);
