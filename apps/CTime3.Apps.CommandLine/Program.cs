@@ -1,7 +1,9 @@
 ﻿using CTime3.Apps.CommandLine.Commands;
 using CTime3.Apps.CommandLine.Infrastructure;
 using CTime3.Core;
+using CTime3.Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace CTime3.Apps.CommandLine;
@@ -17,7 +19,12 @@ class Program
 
         app.Configure(f =>
         {
-            f.PropagateExceptions();
+            f.SetExceptionHandler(ex =>
+            {
+                AnsiConsole.Console.MarkupLine("[red]Oops, an error occurred.[/]");
+                AnsiConsole.Console.MarkupLine(ex.GetFullMessage());
+                return ExitCodes.Failed;
+            });
 
             f.AddCommand<LoginCommand>("login")
                 .WithDescription("Login so you can use the other commands.");
