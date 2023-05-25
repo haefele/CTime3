@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTime3.Apps.CommandLine", "apps\CTime3.Apps.CommandLine\CTime3.Apps.CommandLine.csproj", "{DF449D70-EB16-461C-B6B7-9EC285CDCD93}"
