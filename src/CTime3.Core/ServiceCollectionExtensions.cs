@@ -61,7 +61,6 @@ public static class ServiceCollectionExtensions
                         return false;
 
                     return true;
-                },
-                $"The {nameof(CTimeApplicationOptions.CompanyName)} and the {nameof(CTimeApplicationOptions.AppName)} must be set.");
+                });
     }
 }

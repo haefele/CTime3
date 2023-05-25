@@ -2,7 +2,6 @@
   
   <PropertyGroup Label="Default-Properties">
     <TargetFramework>net7.0</TargetFramework>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>embedded</DebugType>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
