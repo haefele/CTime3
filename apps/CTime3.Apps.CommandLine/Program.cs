@@ -33,6 +33,9 @@ class Program
 
             f.AddCommand<ListUsersCommand>("list-users")
                 .WithDescription("Shows a list of all users in your company.");
+
+            f.AddCommand<StartCommand>("start")
+                .WithDescription("Starts a new timer.");
         });
 
         return await app.RunAsync(args);
